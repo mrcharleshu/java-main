@@ -1,10 +1,11 @@
-target/
-!.mvn/wrapper/maven-wrapper.jar
-
-.mvn
-
-### IntelliJ IDEA ###
 .idea
-*.iws
 *.iml
-*.ipr
+*.swp
+logs
+*.log
+target
+.mvn
+mvn*
+.DS_Store**
+.classpath
+
