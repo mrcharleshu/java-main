@@ -1,10 +1,13 @@
 package com.charles.utils;
 
+import java.security.NoSuchAlgorithmException;
+
 public class MD5Test {
 
-    public static void main(String args[]) {
-        // String str = "s_code0PUKKA-XJ-INDUSTRY-EPG-01\u0000�![\"192.168.19.199\",\"/s.gif?e=exit&cid=dfea58ee469a906caf2a98506f0838b5&u_id=zgepg3&app_version=1.1&lib=js&lib_version=1&p=%7B%22p_type%22%3A%22index%22%2C%22p_id%22%3A%22index_SZYY%22%2C%22p_name%22%3A%22%E7%A5%9E%E5%B7%9E%E5%BD%B1%E9%99%A2%22%2C%22p_referer%22%3A%22http%3A%2F%2F120.205.32.199%3A8080%2Fiptvepg%2Fframe1001%2Fhy%2Fpage%2Findex.html%22%2C%22p_referer_id%22%3A%22index_DJJC%22%2C%22p_url%22%3A%22http%3A%2F%2F120.205.22.39%3A8080%2FshenzhouMovie%2Fpage%2Findex.html%3FreturnUrl%3Dhttp%253A%252F%252F120.205.32.199%253A8080%252Fiptvepg%252Fframe1001%252Fhy%252Fpage%252Findex.html%22%2C%22t_loading%22%3A187%2C%22pkg_code%22%3A%22shenzhouMovie%22%2C%22pkg_exCode%22%3A%223333%22%2C%22pkg_name%22%3A%22%E7%A5%9E%E5%B7%9E%E5%BD%B1%E9%99%A2%22%2C%22pkg_con_type%22%3A%22comic%22%2C%22pkg_type%22%3A1%2C%22t%22%3A1488538769089%2C%22t_zone%22%3A8%2C%22de_name%22%3A%22zx%22%7D&_r=20%20HTTP/1.1%22,%22-%22,%22/s.gif?e=view&cid=dfea58ee469a906caf2a98506f0838b5&u_id=zgepg3&app_version=1.1&lib=js&lib_version=1&p=%7B%22p_type%22%3A%22index%22%2C%22p_id%22%3A%22index_SZYY%22%2C%22p_name%22%3A%22%E7%A5%9E%E5%B7%9E%E5%BD%B1%E9%99%A2%22%2C%22p_referer%22%3A%22http%3A%2F%2F120.205.32.199%3A8080%2Fiptvepg%2Fframe1001%2Fhy%2Fpage%2Findex.html%22%2C%22p_referer_id%22%3A%22index_DJJC%22%2C%22p_url%22%3A%22http%3A%2F%2F120.205.22.39%3A8080%2FshenzhouMovie%2Fpage%2Findex.html%3FreturnUrl%3Dhttp%253A%252F%252F120.205.32.199%253A8080%252Fiptvepg%252Fframe1001%252Fhy%252Fpage%252Findex.html%22%2C%22t_loading%22%3A187%2C%22pkg_code%22%3A%22shenzhouMovie%22%2C%22pkg_exCode%22%3A%223333%22%2C%22pkg_name%22%3A%22%E7%A5%9E%E5%B7%9E%E5%BD%B1%E9%99%A2%22%2C%22pkg_con_type%22%3A%22comic%22%2C%22pkg_type%22%3A1%2C%22t%22%3A1488538769089%2C%22t_zone%22%3A8%2C%22de_name%22%3A%22zx%22%7D&_r=20%22,%22200%22,%2243%22,%22279%22,%22565268%22,%221%22,%221488538769.244%22,%22.%22,%22http://120.205.22.39:8080/shenzhouMovie/page/index.html?returnUrl=http%3A%2F%2F120.205.32.199%3A8080%2Fiptvepg%2Fframe1001%2Fhy%2Fpage%2Findex.html\",\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36\"]";
-        String str = "abcdefghijklmnopqrstuvwxyz";
+    public static void main(String args[]) throws NoSuchAlgorithmException {
+        String str = "{\"byFields\":[\"ES_EPG_CODE\",\"P_MARK\"],\"filters\":{\"conditions\":[{\"field\":\"ES_EPG_CODE\",\"function\":\"notEqual\",\"params\":[\"线路2\"]}],\"relation\":\"and\"},\"fromDate\":\"2017-04-01\",\"measures\":[{\"aggregator\":\"general\",\"eventName\":\"click\"}],\"project\":\"PKIPTV\",\"toDate\":\"2017-04-20\",\"unit\":\"day\"}";
+        // String str = "8a683566bcc7801226b3d8b0cf35fd97";
         System.out.println(MD5.getInstance().getMD5(str));
+        System.out.println(CryptUtils.md5(str));
     }
 }
