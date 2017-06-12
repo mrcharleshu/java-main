@@ -1,4 +1,4 @@
-package com.charles.collection;
+package com.charles.common_object.collection;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;

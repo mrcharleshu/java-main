@@ -1,4 +1,4 @@
-package com.charles.string;
+package com.charles.common_object.string;
 
 import java.util.Arrays;
 
