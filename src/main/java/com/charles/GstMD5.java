@@ -1,6 +1,7 @@
 package com.charles;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
@@ -42,6 +43,7 @@ public class GstMD5 {
     private static final String METHOD_GET_BOXES = "GET_BOXES";
     private static final String METHOD_GET_BOX_CHANNELS_REALTIME = "GET_BOX_CHANNELS_REALTIME";
     private static final String METHOD_GET_BOX_ALARM = "GET_BOX_ALARM";
+    private static final String METHOD_GET_BOX_DAY_POWER = "GET_BOX_DAY_POWER";
 
     private static final char[] hc = "0123456789abcdef".toCharArray();
 
@@ -61,11 +63,19 @@ public class GstMD5 {
         eboxesParams.add(new BasicNameValuePair("sign", getSign(eboxesParams)));
         JSONObject eboxesJson = post(URL_ROUTER, eboxesParams);
         System.out.println(eboxesJson);
+        JSONArray jsonArray = eboxesJson.getJSONArray("data");
         System.out.println("****************");
-        String mac = "187ED530D1F0";
-        eboxAlarmInfo(accessToken, mac);
+        String mac = "D4BF7F4C36A0";
+        //eboxAlarmInfo(accessToken, mac);
         System.out.println("****************");
-        eboxRealtime(accessToken, "187ED530D1F0");
+        //eboxRealtime(accessToken, mac);
+        System.out.println("****************");
+        eboxDayPower(accessToken, mac);
+        for (Object object : jsonArray) {
+            JSONObject jsonObject = (JSONObject) object;
+            System.out.println("MAC: " + jsonObject.getString("mac"));
+            eboxDayPower(accessToken, jsonObject.getString("mac"));
+        }
 //        for (int i = 0; i < 20; i++) {
 //            Thread.sleep(1000 * 10);
 //            eboxRealtime(accessToken, "187ED530D1F0");
@@ -93,6 +103,19 @@ public class GstMD5 {
         realtimeParams.add(new BasicNameValuePair("sign", getSign(realtimeParams)));
         JSONObject realtimeJson = post(URL_ROUTER, realtimeParams);
         System.out.println(realtimeJson);
+    }
+
+    private static void eboxDayPower(String accessToken, String mac)
+            throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        List<NameValuePair> dayPowerParams = getCommonParams(METHOD_GET_BOX_DAY_POWER, accessToken);
+        dayPowerParams.add(new BasicNameValuePair("projectCode", PROJECT_CODE));
+        dayPowerParams.add(new BasicNameValuePair("mac", mac));
+        dayPowerParams.add(new BasicNameValuePair("year", "2017"));
+        dayPowerParams.add(new BasicNameValuePair("month", "06"));
+        dayPowerParams.add(new BasicNameValuePair("day", "19"));
+        dayPowerParams.add(new BasicNameValuePair("sign", getSign(dayPowerParams)));
+        JSONObject dayPowerJson = post(URL_ROUTER, dayPowerParams);
+        System.out.println(dayPowerJson);
     }
 
     public static String getSign(List<NameValuePair> params) throws UnsupportedEncodingException, NoSuchAlgorithmException {

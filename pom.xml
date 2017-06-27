@@ -29,6 +29,10 @@
         <quartz.version>2.2.1</quartz.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
         <gson.version>2.7</gson.version>
+        <jxls.version>2.3.0</jxls.version>
+        <jxls-poi.version>1.0.9</jxls-poi.version>
+        <jxls-jexcel.version>1.0.6</jxls-jexcel.version>
+        <jxls-reader.version>2.0.2</jxls-reader.version>
     </properties>
 
     <dependencies>
@@ -100,6 +104,21 @@
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jxls</groupId>
+            <artifactId>jxls</artifactId>
+            <version>${jxls.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jxls</groupId>
+            <artifactId>jxls-poi</artifactId>
+            <version>${jxls-poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jxls</groupId>
+            <artifactId>jxls-jexcel</artifactId>
+            <version>${jxls-jexcel.version}</version>
         </dependency>
     </dependencies>
 
