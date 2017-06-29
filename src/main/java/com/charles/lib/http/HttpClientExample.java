@@ -26,7 +26,18 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApacheHttpClientExample {
+/**
+ * below are the steps for using Apache HttpClient to send GET and POST requests.
+ * <p>
+ * 1.Create instance of CloseableHttpClient using helper class HttpClients.
+ * 2.Create HttpGet or HttpPost instance based on the HTTP request type.
+ * 3.Use addHeader method to add required headers such as User-Agent, Accept-Encoding etc.
+ * 4.For POST, create list of NameValuePair and add all the form parameters. Then set it to the HttpPost entity.
+ * 5.Get CloseableHttpResponse by executing the HttpGet or HttpPost request.
+ * 6.Get required details such as status code, error information, response html etc from the response.
+ * 7.Finally close the apache HttpClient resource.
+ */
+public class HttpClientExample {
 
     private static final String USER_AGENT = "Mozilla/5.0";
 
@@ -42,10 +53,11 @@ public class ApacheHttpClientExample {
     }
 
     private static void sendGET() throws IOException {
-        // CloseableHttpClient httpClient = HttpClients.createDefault();
-        CloseableHttpClient httpClient = createSSLClientDefault();
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        // CloseableHttpClient httpClient = createSSLClientDefault();
         String url = "https://sms.api.ums86.com:9600/sms/Api/Send.do?SpCode=215991&LoginName=zx_gst&Password=gst12345&MessageContent=%B8%D0%D0%BB%C4%FA%CA%B9%D3%C3%D6%C7%C4%DC%B5%E7%B9%DC%BC%D2%A3%AC%C4%FA%B1%BE%B4%CE%B2%D9%D7%F7%B5%C4%D1%E9%D6%A4%C2%EB%CA%C7123124%2C%C8%E7%D3%D0%D2%C9%CE%CA%C7%EB%B2%A6%B4%F2%BF%CD%B7%FE%C8%C8%CF%DF400-166-6326%21&SerialNumber=94324383390924368498&ScheduleTime=&f=1&ExtendAccessNum=&UserNumber=17701618907";
-        HttpGet httpGet = new HttpGet(url);
+        // HttpGet httpGet = new HttpGet(url);
+        HttpGet httpGet = new HttpGet(GET_URL);
         // httpGet.addHeader("User-Agent", USER_AGENT);
         CloseableHttpResponse response = httpClient.execute(httpGet);
 
@@ -64,6 +76,7 @@ public class ApacheHttpClientExample {
         urlParameters.add(new BasicNameValuePair("userName", "Pankaj Kumar"));
 
         HttpEntity postParams = new UrlEncodedFormEntity(urlParameters);
+        // HttpEntity postParams = new UrlEncodedFormEntity(urlParameters, "UTF-8");
         httpPost.setEntity(postParams);
 
         CloseableHttpResponse response = httpClient.execute(httpPost);
