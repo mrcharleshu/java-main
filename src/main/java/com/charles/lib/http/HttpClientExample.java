@@ -6,9 +6,15 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.ssl.TrustStrategy;
@@ -41,33 +47,62 @@ public class HttpClientExample {
 
     private static final String USER_AGENT = "Mozilla/5.0";
 
-    private static final String GET_URL = "http://www.gxnu.edu.cn/default.html";
+    // private static final String GET_URL = "http://www.gxnu.edu.cn/default.html";
+    // private static final String GET_URL = "https://www.baidu.com";
+    private static final String GET_URL = "https://stackoverflow.com/questions/34655031/javax-net-ssl-sslpeerunverifiedexception-host-name-does-not-match-the-certifica";
+    private static final String SMS_URL
+            = "https://sms.api.ums86.com:9600/sms/Api/Send.do?SpCode=215991&LoginName=zx_gst&Password=gst12345&MessageContent=%B8%D0%D0%BB%C4%FA%CA%B9%D3%C3%D6%C7%C4%DC%B5%E7%B9%DC%BC%D2%A3%AC%C4%FA%B1%BE%B4%CE%B2%D9%D7%F7%B5%C4%D1%E9%D6%A4%C2%EB%CA%C7127599%2C%C8%E7%D3%D0%D2%C9%CE%CA%C7%EB%B2%A6%B4%F2%BF%CD%B7%FE%C8%C8%CF%DF400-166-6326%21&SerialNumber=94324383390924368498&ScheduleTime=&f=1&ExtendAccessNum=&UserNumber=15221337425";
 
     private static final String POST_URL = "http://localhost:9090/SpringMVCExample/home";
 
-    public static void main(String[] args) throws IOException {
-        sendGET();
-        System.out.println("GET DONE");
-        //sendPOST();
-        //System.out.println("POST DONE");
+    public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
+        // sendGET();
+        // System.out.println("GET DONE");
+        // sendPOST();
+        // System.out.println("POST DONE");
+        httpsGet();
     }
 
     private static void sendGET() throws IOException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         // CloseableHttpClient httpClient = createSSLClientDefault();
-        String url = "https://sms.api.ums86.com:9600/sms/Api/Send.do?SpCode=215991&LoginName=zx_gst&Password=gst12345&MessageContent=%B8%D0%D0%BB%C4%FA%CA%B9%D3%C3%D6%C7%C4%DC%B5%E7%B9%DC%BC%D2%A3%AC%C4%FA%B1%BE%B4%CE%B2%D9%D7%F7%B5%C4%D1%E9%D6%A4%C2%EB%CA%C7123124%2C%C8%E7%D3%D0%D2%C9%CE%CA%C7%EB%B2%A6%B4%F2%BF%CD%B7%FE%C8%C8%CF%DF400-166-6326%21&SerialNumber=94324383390924368498&ScheduleTime=&f=1&ExtendAccessNum=&UserNumber=17701618907";
-        // HttpGet httpGet = new HttpGet(url);
         HttpGet httpGet = new HttpGet(GET_URL);
         // httpGet.addHeader("User-Agent", USER_AGENT);
         CloseableHttpResponse response = httpClient.execute(httpGet);
+        System.out.println("GET Response Status:: " + response.getStatusLine());
+        consume(response.getEntity());
+        httpClient.close();
+    }
 
-        System.out.println("GET Response Status:: " + response.getStatusLine().getStatusCode());
+    /**
+     * https://stackoverflow.com/questions/34655031/javax-net-ssl-sslpeerunverifiedexception-host-name-does-not-match-the-certifica
+     * @throws IOException
+     * @throws NoSuchAlgorithmException
+     */
+    private static void httpsGet() throws IOException, NoSuchAlgorithmException {
+        final SSLConnectionSocketFactory ssl_csf = new SSLConnectionSocketFactory(SSLContext.getDefault(),
+                NoopHostnameVerifier.INSTANCE);
+        final Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
+                .register("http", new PlainConnectionSocketFactory())
+                .register("https", ssl_csf)
+                .build();
+
+        final PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(registry);
+        cm.setMaxTotal(100);
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setSSLSocketFactory(ssl_csf)
+                .setConnectionManager(cm)
+                .build();
+        HttpGet httpGet = new HttpGet(GET_URL);
+        // HttpGet httpGet = new HttpGet(SMS_URL);
+        // httpGet.addHeader("User-Agent", USER_AGENT);
+        CloseableHttpResponse response = httpClient.execute(httpGet);
+        System.out.println("GET Response Status:: " + response.getStatusLine());
         consume(response.getEntity());
         httpClient.close();
     }
 
     private static void sendPOST() throws IOException {
-
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(POST_URL);
         httpPost.addHeader("User-Agent", USER_AGENT);
@@ -78,14 +113,10 @@ public class HttpClientExample {
         HttpEntity postParams = new UrlEncodedFormEntity(urlParameters);
         // HttpEntity postParams = new UrlEncodedFormEntity(urlParameters, "UTF-8");
         httpPost.setEntity(postParams);
-
         CloseableHttpResponse response = httpClient.execute(httpPost);
-
-        System.out.println("POST Response Status:: " + response.getStatusLine().getStatusCode());
-
+        System.out.println("POST Response Status:: " + response.getStatusLine());
         consume(response.getEntity());
         httpClient.close();
-
     }
 
     private static void consume(HttpEntity entity) throws IOException {
