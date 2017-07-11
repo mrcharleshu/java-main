@@ -28,7 +28,6 @@
         <guava.version>19.0</guava.version>
         <!--<quartz.version>2.2.1</quartz.version>-->
         <pinyin4j.version>2.5.1</pinyin4j.version>
-        <activemq.version>5.14.4</activemq.version>
         <gson.version>2.7</gson.version>
         <jxls.version>2.3.0</jxls.version>
         <jxls-poi.version>1.0.9</jxls-poi.version>
@@ -124,11 +123,6 @@
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-all</artifactId>
-            <version>${activemq.version}</version>
         </dependency>
     </dependencies>
 

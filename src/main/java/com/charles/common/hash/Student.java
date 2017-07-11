@@ -3,7 +3,7 @@ package com.charles.common.hash;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class HashSetObject {
+public class Student {
 
     public static void main(String[] args) {
         print(rawSet());
