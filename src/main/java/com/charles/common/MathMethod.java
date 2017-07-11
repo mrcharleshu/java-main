@@ -1,6 +1,6 @@
-package com.charles.common.math;
+package com.charles.common;
 
-public class Test {
+public class MathMethod {
 
     public static void main(String[] args) {
         int value1 = (int) Math.ceil(5 / 2);

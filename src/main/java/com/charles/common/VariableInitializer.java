@@ -1,13 +1,13 @@
 package com.charles.common;
 
-public class ClassStaticBlock {
+public class VariableInitializer {
 
     private String name; // 声明变量name
     private String sex; // 声明变量sex
     private static int age;// 声明静态变量age
 
     // 构造方法
-    public ClassStaticBlock() {
+    public VariableInitializer() {
         System.out.println("通过构造方法初始化name");
         name = "tom";
     }
@@ -30,7 +30,7 @@ public class ClassStaticBlock {
 
     public static void main(String[] args) {
         // 创建对象
-        ClassStaticBlock instance = new ClassStaticBlock();
+        VariableInitializer instance = new VariableInitializer();
         // 调用对象的show方法
         instance.show();
     }

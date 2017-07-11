@@ -3,11 +3,16 @@ package com.charles.common.hash;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import static java.lang.System.lineSeparator;
+
+/**
+ * 验证HashSet中的对象实现和不实现hashcode和equals方法的区别
+ */
 public class Student {
 
     public static void main(String[] args) {
         print(rawSet());
-        System.out.println();
+        lineSeparator();
         print(newSet());
     }
 

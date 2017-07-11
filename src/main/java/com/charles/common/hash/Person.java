@@ -3,9 +3,15 @@ package com.charles.common.hash;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.charles.utils.LineSeperators.hyphenSeparator;
+import static com.charles.utils.LineSeperators.startSeperator;
+
+/**
+ * 验证当Hashcode一样时会调用equals方法
+ */
 public class Person {
     private int age;
-    private int sex;    //0：男，1：女
+    private int sex;    // 0：男，1：女
     private String name;
     private final int PRIME = 37;
 
@@ -67,17 +73,10 @@ public class Person {
             return true;
         }
         Person person = (Person) obj;
-        if (getAge() != person.getAge() || getSex() != person.getSex()) {
-            return false;
+        if (getAge() == person.getAge() && getSex() == person.getSex() && getName().equals(person.getName())) {
+            return true;
         }
-        if (getName() != null) {
-            if (!getName().equals(person.getName())) {
-                return false;
-            }
-        } else if (person != null) {
-            return false;
-        }
-        return true;
+        return false;
     }
 
     public static void main(String[] args) {
@@ -89,15 +88,15 @@ public class Person {
         //只验证p1、p3
         System.out.println("p1 == p3? :" + (p1 == p3));
         System.out.println("p1.equals(p3)?:" + p1.equals(p3));
-        System.out.println("-----------------------分割线--------------------------");
+        startSeperator();
         set.add(p1);
-        System.out.println("-------------------------------------------");
+        hyphenSeparator();
         set.add(p2);
-        System.out.println("-------------------------------------------");
+        hyphenSeparator();
         set.add(p3);
-        System.out.println("-------------------------------------------");
+        hyphenSeparator();
         set.add(p4);
-        System.out.println("-------------------------------------------");
+        hyphenSeparator();
         System.out.println("set.size()=" + set.size());
     }
 }
