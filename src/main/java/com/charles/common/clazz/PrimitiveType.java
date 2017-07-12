@@ -1,4 +1,4 @@
-package com.charles.common;
+package com.charles.common.clazz;
 
 import static com.charles.utils.LineSeperators.hyphenSeparator;
 

@@ -1,4 +1,4 @@
-package com.charles.common;
+package com.charles.common.clazz;
 
 public class VariableInitializer {
 
