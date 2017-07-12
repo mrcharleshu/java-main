@@ -1,4 +1,4 @@
-package com.charles.sort;
+package com.charles.algorithm;
 
 /**
  * 在要排序的一组数中，假设前面(n-1)[n>=2] 个数已经是排好顺序的，现在要把第n个数插到前面的有序数中，

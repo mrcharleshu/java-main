@@ -8,7 +8,7 @@ package com.charles.common;
  * 但是就像要避免使用goto一样，应该避免使用带标签的break和continue，因为它不会让你的程序变得更优雅，
  * 很多时候甚至有相反的作用，所以这种语法其实不知道更好）
  */
-public class MultiLoopBreak {
+public class NestedLoopBreak {
 
     public static void main(String[] args) {
         int arr[][] = {{1, 2, 3}, {4, 5, 6, 7}, {9}};
