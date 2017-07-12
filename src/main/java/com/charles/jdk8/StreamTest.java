@@ -161,7 +161,7 @@ public class StreamTest {
         );
         System.out.println("parallelStreamResult: " + parallelStreamResult);
 
-        System.out.println("parallelStream test2");
+        System.out.println("parallelStream methodInvoke3");
         int parallelStreamResult2 = strList.parallelStream().reduce(
             0,
             (total, s) -> {
