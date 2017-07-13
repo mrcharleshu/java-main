@@ -1,3 +1,3 @@
-# java-memo
+# java-main
 
-Java basic and related operation memo
+Try to use java main to get familiar with all characteristics of Java

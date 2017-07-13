@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.charles</groupId>
-    <artifactId>java-memo</artifactId>
+    <artifactId>java-main</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>java-memo</name>
-    <description>Java Memo project for Spring Boot</description>
+    <name>java-main</name>
+    <description>Java Main Project</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
