@@ -10,12 +10,10 @@ import java.util.Properties;
 import static org.apache.commons.lang3.CharEncoding.UTF_8;
 
 public class JavaMail {
-    // public static String senderEmailAccount = "mrcharleshu@163.com";
-    // public static String senderEmailPassword = "fg3gmW7ambs2eUW9";
-    public static String senderEmailAccount = "huijiating@greatv.cn";
-    public static String senderEmailPassword = "123.Com";
+    public static String senderEmailAccount = "";
+    public static String senderEmailPassword = "";
     // 收件人邮箱（替换为自己知道的有效邮箱）
-    public static String receiverEmailAccount = "hub@pukkasoft.cn";
+    public static String receiverEmailAccount = "";
 
     private static final String MAIL_SMTP_HOST = "smtp.exmail.qq.com";
     // private static final String MAIL_SMTP_HOST= "smtp.163.com";
