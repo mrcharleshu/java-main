@@ -5,7 +5,7 @@ import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
 
-public class Sort {
+public class CollectionsSort {
 
     public static void main(String[] args) {
         List<Integer> list = Lists.newArrayList(2, 3, 6, 3, 1, 9, 4);
