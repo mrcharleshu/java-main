@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
-import static com.charles.utils.LineSeperators.hyphenSeparator;
+import static com.charles.utils.LineSeparators.hyphenSeparator;
 
 /**
  * 把对象插入列表的下标0中

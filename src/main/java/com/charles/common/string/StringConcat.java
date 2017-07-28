@@ -1,6 +1,6 @@
 package com.charles.common.string;
 
-import static com.charles.utils.LineSeperators.hyphenSeparator;
+import static com.charles.utils.LineSeparators.hyphenSeparator;
 
 /**
  * 字符串拼接不要直接用 String 相加，StringBuilder 的效率要比 String 直接相加拼接要高。

@@ -6,7 +6,7 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.charles.utils.LineSeperators.hyphenSeparator;
+import static com.charles.utils.LineSeparators.hyphenSeparator;
 
 /**
  * 函数式编程特性

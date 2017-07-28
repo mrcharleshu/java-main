@@ -6,7 +6,7 @@ import com.google.common.collect.Sets;
 import java.util.List;
 import java.util.Set;
 
-import static com.charles.utils.LineSeperators.hyphenSeparator;
+import static com.charles.utils.LineSeparators.hyphenSeparator;
 
 /**
  * 两个集合的交叉方法

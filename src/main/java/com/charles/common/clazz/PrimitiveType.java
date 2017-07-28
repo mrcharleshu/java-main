@@ -1,6 +1,6 @@
 package com.charles.common.clazz;
 
-import static com.charles.utils.LineSeperators.hyphenSeparator;
+import static com.charles.utils.LineSeparators.hyphenSeparator;
 
 public class PrimitiveType {
 

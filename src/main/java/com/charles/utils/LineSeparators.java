@@ -1,12 +1,16 @@
 package com.charles.utils;
 
-public final class LineSeperators {
+public final class LineSeparators {
 
-    public static void startSeperator() {
+    public static void startSeparator() {
         System.out.println("--------------------- 开始 ----------------------");
     }
 
     public static void hyphenSeparator() {
         System.out.println("-------------------------------------------");
+    }
+
+    public static void hyphenSeparator(String title) {
+        System.out.println("--------------------- " + title + " ----------------------");
     }
 }

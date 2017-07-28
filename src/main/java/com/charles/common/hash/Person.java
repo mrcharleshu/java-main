@@ -3,8 +3,8 @@ package com.charles.common.hash;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.charles.utils.LineSeperators.hyphenSeparator;
-import static com.charles.utils.LineSeperators.startSeperator;
+import static com.charles.utils.LineSeparators.hyphenSeparator;
+import static com.charles.utils.LineSeparators.startSeparator;
 
 /**
  * 验证当Hashcode一样时会调用equals方法
@@ -88,7 +88,7 @@ public class Person {
         //只验证p1、p3
         System.out.println("p1 == p3? :" + (p1 == p3));
         System.out.println("p1.equals(p3)?:" + p1.equals(p3));
-        startSeperator();
+        startSeparator();
         set.add(p1);
         hyphenSeparator();
         set.add(p2);

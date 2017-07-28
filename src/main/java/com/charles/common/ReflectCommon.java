@@ -5,7 +5,7 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import static com.charles.utils.LineSeperators.hyphenSeparator;
+import static com.charles.utils.LineSeparators.hyphenSeparator;
 
 public class ReflectCommon {
 
@@ -20,6 +20,32 @@ public class ReflectCommon {
         System.out.println(methodInvoke2(student, "name"));
         hyphenSeparator();
         System.out.println(methodInvoke3(student, "name"));
+    }
+
+    private static class Student {
+        private String name;
+        private Integer age;
+
+        public Student(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Integer getAge() {
+            return age;
+        }
+
+        public void setAge(Integer age) {
+            this.age = age;
+        }
     }
 
     /**
@@ -137,31 +163,5 @@ public class ReflectCommon {
             return string;
         }
         return Character.toLowerCase(string.charAt(0)) + string.substring(1);
-    }
-}
-
-class Student {
-    private String name;
-    private Integer age;
-
-    public Student(String name, int age) {
-        this.name = name;
-        this.age = age;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 }
