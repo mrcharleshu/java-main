@@ -2,14 +2,14 @@ package com.charles.common.clone;
 
 public class Wife implements Cloneable {
 
-    private int id;
+    private Integer id; // Integer和int一样
     private String name;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -21,7 +21,7 @@ public class Wife implements Cloneable {
         this.name = name;
     }
 
-    public Wife(int id, String name) {
+    public Wife(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -39,7 +39,7 @@ public class Wife implements Cloneable {
 
     @Override
     public int hashCode() {
-        int result = id;
+        Integer result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
