@@ -1,4 +1,4 @@
-package com.charles.jdk8;
+package com.charles.common.date;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -9,10 +9,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
 
-/**
- * Created by Charles on 16/8/15.
- */
-public class DateTest {
+public class Java8DateTest {
     public static void main(String[] args) {
         System.out.println("############################ Clock ##########################");
         // Clock 时钟
@@ -51,7 +48,7 @@ public class DateTest {
         LocalTime late = LocalTime.of(23, 59, 59);
         System.out.println(late);       // 23:59:59
         DateTimeFormatter germanFormatter1 =
-            DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(Locale.GERMAN);
+                DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(Locale.GERMAN);
         LocalTime leetTime = LocalTime.parse("13:37", germanFormatter1);
         System.out.println(leetTime);   // 13:37
         System.out.println("############################# LocalDate #########################");
@@ -65,7 +62,7 @@ public class DateTest {
         System.out.println(dayOfWeek1);    // FRIDAY
         // 从字符串解析一个LocalDate类型和解析LocalTime一样简单：
         DateTimeFormatter germanFormatter2 =
-            DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale.GERMAN);
+                DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale.GERMAN);
         LocalDate xmas = LocalDate.parse("24.12.2014", germanFormatter2);
         System.out.println(xmas);   // 2014-12-24
         System.out.println("############################# LocalDateTime #########################");
