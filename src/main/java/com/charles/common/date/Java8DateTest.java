@@ -9,9 +9,12 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
 
+import static com.charles.utils.LineSeparators.hyphenSeparator;
+
 public class Java8DateTest {
+
     public static void main(String[] args) {
-        System.out.println("############################ Clock ##########################");
+        hyphenSeparator("Clock");
         // Clock 时钟
         // Clock类提供了访问当前日期和时间的方法，Clock是时区敏感的，可以用来取代 System.currentTimeMillis() 来获取当前的微秒数。
         // 某一个特定的时间点也可以使用Instant类来表示，Instant类也可以用来创建老的java.util.Date对象。
@@ -22,7 +25,7 @@ public class Java8DateTest {
         Instant instant1 = clock.instant();
         Date legacyDate1 = Date.from(instant1);   // legacy java.util.Date
         System.out.println(legacyDate1);
-        System.out.println("############################ Timezones ##########################");
+        hyphenSeparator("Timezones");
         // Timezones 时区
         // 在新API中时区使用ZoneId来表示。时区可以很方便的使用静态方法of来获取到。
         // 时区定义了到UTS时间的时间差，在Instant时间点对象到本地日期对象之间转换的时候是极其重要的。
@@ -36,7 +39,7 @@ public class Java8DateTest {
         System.out.println(zone2.getRules());
         // ZoneRules[currentStandardOffset=+01:00]
         // ZoneRules[currentStandardOffset=-03:00]
-        System.out.println("############################# LocalTime #########################");
+        hyphenSeparator("LocalTime");
         LocalTime now1 = LocalTime.now(zone1);
         LocalTime now2 = LocalTime.now(zone2);
         System.out.println(now1.isBefore(now2));  // false
@@ -51,7 +54,7 @@ public class Java8DateTest {
                 DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(Locale.GERMAN);
         LocalTime leetTime = LocalTime.parse("13:37", germanFormatter1);
         System.out.println(leetTime);   // 13:37
-        System.out.println("############################# LocalDate #########################");
+        hyphenSeparator("LocalDate");
         // LocalDate 表示了一个确切的日期，比如 2014-03-11。该对象值是不可变的，用起来和LocalTime基本一致。
         // 下面的例子展示了如何给Date对象加减天/月/年。另外要注意的是这些对象是不可变的，操作返回的总是一个新实例。
         LocalDate today = LocalDate.now();
@@ -65,7 +68,7 @@ public class Java8DateTest {
                 DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale.GERMAN);
         LocalDate xmas = LocalDate.parse("24.12.2014", germanFormatter2);
         System.out.println(xmas);   // 2014-12-24
-        System.out.println("############################# LocalDateTime #########################");
+        hyphenSeparator("LocalDateTime");
         // LocalDateTime 同时表示了时间和日期，相当于前两节内容合并到一个对象上了。LocalDateTime和LocalTime还有LocalDate一样，
         // 都是不可变的。LocalDateTime提供了一些能访问具体字段的方法。
         LocalDateTime sylvester = LocalDateTime.of(2014, Month.DECEMBER, 31, 23, 59, 59);
