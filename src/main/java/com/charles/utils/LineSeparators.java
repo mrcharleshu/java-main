@@ -3,7 +3,9 @@ package com.charles.utils;
 public final class LineSeparators {
 
     public static void startSeparator() {
-        System.out.println("--------------------- 开始 ----------------------");
+        // System.out.println("***************************************************************");
+        // System.out.println("·······································································");
+        System.out.println("·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·~·");
     }
 
     public static void hyphenSeparator() {
