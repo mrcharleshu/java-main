@@ -1,11 +1,6 @@
 package com.charles.algorithm;
 
-import com.google.common.collect.Lists;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static com.charles.utils.LineSeparators.hyphenSeparator;
 
@@ -17,8 +12,8 @@ import static com.charles.utils.LineSeparators.hyphenSeparator;
  */
 public class BinaryTree {
     private static final String SPACE = " ";
-    private static final String DELIMITER = "··";
-    private static final int HOLDER_LEN = 2;// 二叉树中的值的长度，包括分隔符
+    private static final String DELIMITER = "·";
+    private static final int HOLDER_LEN = 1;// 二叉树中的值的长度，包括分隔符⊂⊃
 
     private static class TreeNode {
         TreeNode left;
@@ -285,12 +280,12 @@ public class BinaryTree {
         // 链表存储方式
         // TreeNode rootNode = binaryTree.initByChainTable(array1);
         // 顺序存储方式
-        int[] array2 = {4, 1, 2, 2, 1, 3, 6, 4, 8, 5, 7, 3, 7, 8, 9};
+        int[] array2 = {4, 1, 2, 2, 1, 3, 1, 1, 6, 4, 8, 5, 7, 3, 7, 8, 9};
         TreeNode rootNode = binaryTree.initBySequence(array2);
         int treeDepth = getTreeDepth(rootNode);
         hyphenSeparator();
         System.out.println("Tree Depth = " + treeDepth);
-        List<Point> points = Lists.newArrayList();
+        List<Point> points = new ArrayList<>();
         treeNodeToPoint(rootNode, points, 0, -1, treeDepth);
         hyphenSeparator("所有的points信息，排序前");
         points.forEach(System.out::println);
