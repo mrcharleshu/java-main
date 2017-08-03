@@ -6,6 +6,7 @@ import java.util.List;
 
 import static com.charles.algorithm.tree.TreeUtils.printTree;
 import static com.charles.algorithm.tree.TreeUtils.traverse;
+import static com.charles.utils.LineSeparators.hyphenSeparator;
 
 /**
  * 功能：
@@ -111,6 +112,8 @@ public class BinaryTree {
         // 链表存储方式
         TreeNode rootNode = initByChainTable(array);
         BinaryTree binaryTree = new BinaryTree(rootNode);
+        traverse(binaryTree.root, node -> System.out.print(node.data + Printer.ARROW));
+        hyphenSeparator();
         traverse(binaryTree.root);
         printTree(binaryTree.root);
     }
