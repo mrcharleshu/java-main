@@ -42,7 +42,7 @@ class TreeUtils {
         if (node == null) {
             return;
         }
-        dataPrint.print(node.data);
+        dataPrint.print(node);
         root_left_right(node.left, dataPrint);
         root_left_right(node.right, dataPrint);
     }
@@ -61,7 +61,7 @@ class TreeUtils {
             return;
         }
         ldrTraverse(node.left, dataPrint);
-        dataPrint.print(node.data);
+        dataPrint.print(node);
         ldrTraverse(node.right, dataPrint);
     }
 
@@ -80,7 +80,7 @@ class TreeUtils {
         }
         left_right_root(node.left, dataPrint);
         left_right_root(node.right, dataPrint);
-        dataPrint.print(node.data);
+        dataPrint.print(node);
     }
 
     static List<Point> treeNodeToPoint(TreeNode rootNode) {

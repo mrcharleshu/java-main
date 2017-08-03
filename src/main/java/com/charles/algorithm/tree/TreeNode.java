@@ -4,6 +4,7 @@ class TreeNode {
     TreeNode left;
     TreeNode right;
     Integer data;
+    int count = 1;//默认重复为1
 
     TreeNode() {
         this.data = -1;
@@ -50,7 +51,7 @@ class TreeNode {
     }
 
     void insert(TreeNode root, int data) {
-        if (root.data < 0) {
+        if (root.data < 0) {    // root
             root.data = data;
         } else {
             TreeNode leaf = new TreeNode(data);
@@ -61,18 +62,20 @@ class TreeNode {
     private void insert(TreeNode node, TreeNode leaf) {
         // 叶子节点和node节点比，小于等于放左边，大于放右边
         int compare = leaf.data.compareTo(node.data);
-        if (compare <= 0) {             // <= 小于根节点在左子树上添加
+        if (compare < 0) {             // < 小于根节点在左子树上添加
             if (node.left == null) {
                 node.left = leaf;
             } else {
                 insert(node.left, leaf);
             }
-        } else {                        // > 大于根节点在右子树上添加
+        } else if (compare > 0) {      // > 大于根节点在右子树上添加
             if (node.right == null) {
                 node.right = leaf;
             } else {
                 insert(node.right, leaf);
             }
+        } else {
+            node.count++;
         }
     }
 }
