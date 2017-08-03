@@ -13,10 +13,10 @@ class TreeUtils {
     private static final String TREE_DATA_FORMATTER = "%" + HOLDER_LEN + "s";
 
     static void traverse(TreeNode root) {
-        traverse(root, DataPrint.DEFAULT_PRINT);
+        traverse(root, Printer.DEFAULT_PRINT);
     }
 
-    static void traverse(TreeNode root, DataPrint dataPrint) {
+    static void traverse(TreeNode root, Printer dataPrint) {
         startSeparator();
         hyphenSeparator("先序遍历");
         dlrTraverse(root, dataPrint);
@@ -29,7 +29,7 @@ class TreeUtils {
         System.out.println();
     }
 
-    private static void dlrTraverse(TreeNode node, DataPrint dataPrint) {
+    private static void dlrTraverse(TreeNode node, Printer dataPrint) {
         root_left_right(node, dataPrint);
     }
 
@@ -38,7 +38,7 @@ class TreeUtils {
      * 首先访问根，再先序遍历左（右）子树，最后先序遍历右（左）子树
      * @param node
      */
-    private static void root_left_right(TreeNode node, DataPrint dataPrint) {
+    private static void root_left_right(TreeNode node, Printer dataPrint) {
         if (node == null) {
             return;
         }
@@ -47,7 +47,7 @@ class TreeUtils {
         root_left_right(node.right, dataPrint);
     }
 
-    private static void ldrTraverse(TreeNode node, DataPrint dataPrint) {
+    private static void ldrTraverse(TreeNode node, Printer dataPrint) {
         left_root_right(node, dataPrint);
     }
 
@@ -56,7 +56,7 @@ class TreeUtils {
      * 首先中序遍历左（右）子树，再访问根，最后中序遍历右（左）子树
      * @param node
      */
-    private static void left_root_right(TreeNode node, DataPrint dataPrint) {
+    private static void left_root_right(TreeNode node, Printer dataPrint) {
         if (node == null) {
             return;
         }
@@ -65,7 +65,7 @@ class TreeUtils {
         ldrTraverse(node.right, dataPrint);
     }
 
-    private static void lrdTraverse(TreeNode node, DataPrint dataPrint) {
+    private static void lrdTraverse(TreeNode node, Printer dataPrint) {
         left_right_root(node, dataPrint);
     }
 
@@ -74,7 +74,7 @@ class TreeUtils {
      * 首先后序遍历左（右）子树，再后序遍历右（左）子树，最后访问根
      * @param node
      */
-    static void left_right_root(TreeNode node, DataPrint dataPrint) {
+    static void left_right_root(TreeNode node, Printer dataPrint) {
         if (node == null) {
             return;
         }

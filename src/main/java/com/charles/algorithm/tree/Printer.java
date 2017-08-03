@@ -5,7 +5,7 @@ package com.charles.algorithm.tree;
  * 可以自定义输出规则
  */
 @FunctionalInterface
-public interface DataPrint {
+public interface Printer {
 
     String SPACE = " ";
     String BRACKET_LEFT = "[";
@@ -14,6 +14,6 @@ public interface DataPrint {
 
     void print(TreeNode node);
 
-    DataPrint DEFAULT_PRINT = node -> System.out.print(node.data +
+    Printer DEFAULT_PRINT = node -> System.out.print(node.data +
             (node.count > 1 ? (BRACKET_LEFT + node.count + BRACKET_RIGHT + SPACE) : SPACE));
 }
