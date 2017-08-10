@@ -12,7 +12,7 @@ public class CollectionsSort {
         System.out.println(list);
         Collections.sort(list);
         System.out.println(list);
-        Collections.sort(list, (a, b) -> b - a);
+        list.sort((a, b) -> b - a);
         System.out.println(list);
     }
 }

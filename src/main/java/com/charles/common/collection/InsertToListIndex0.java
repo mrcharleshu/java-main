@@ -19,6 +19,9 @@ public class InsertToListIndex0 {
         hyphenSeparator();
         list.add(0, "Sonya");
         list.forEach(System.out::println);
+        hyphenSeparator();
         list.add("Mary");
+        list.add(0, "Colin");
+        list.forEach(System.out::println);
     }
 }
