@@ -1,11 +1,5 @@
 package com.charles.java8;
 
-/***************************************
- * @author:Alex Wang
- * @Date:2016/10/29 QQ:532500648
- * QQ交流群:286081824
- ***************************************/
-
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
@@ -133,9 +127,9 @@ public class CollectorsAction4 {
 
             if (key.getId() != Thread.currentThread().getId())
                 continue;
-            System.out.println("=========="+key.getName());
+            System.out.println("==========" + key.getName());
             for (StackTraceElement ste : value) {
-                if(ste.isNativeMethod())
+                if (ste.isNativeMethod())
                     continue;
                 System.out.println(ste.getClassName());
                 System.out.println("isNativeMethod>" + ste.isNativeMethod());
