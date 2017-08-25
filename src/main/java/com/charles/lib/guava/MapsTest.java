@@ -16,10 +16,10 @@ public class MapsTest {
 
     @SuppressWarnings("unchecked")
     public static void main(String[] args) {
-        Person p1 = new Person("001", "Charles");
-        Person p2 = new Person("002", "Lily");
+        Person person1 = new Person("001", "Charles");
+        Person person2 = new Person("002", "Lily");
 
-        List<Person> personList = Lists.newArrayList(p1, p2);
+        List<Person> persons = Lists.newArrayList(person1, person2);
 
         // 将主键当作Map的Key
         // Map<String, Person> personMap = Maps.uniqueIndex(personList.iterator(), new Function<Person, String>() {
@@ -28,14 +28,14 @@ public class MapsTest {
         //        return input.getId();
         //    }
         // });
-        Map<String, Person> personMap = Maps.uniqueIndex(personList.iterator(), Person::getId);
+        Map<String, Person> personMap = Maps.uniqueIndex(persons.iterator(), Person::getId);
         System.out.println("将主键当作Map的Key:" + personMap);
         // 转换Map中的value值
         Map<String, String> transformValuesMap = Maps.transformValues(personMap, Person::getName);
         System.out.println("转换Map中的value值" + transformValuesMap);
 
         // 可以说是Maps.uniqueIndex相反的作用
-        Set<Person> personSet = Sets.newHashSet(p1, p2);
+        Set<Person> personSet = Sets.newHashSet(person1, person2);
         Map<Person, String> personAsMap = Maps.asMap(personSet, (Function) input -> ((Person) input).getId());
         System.out.println(personAsMap);
     }
@@ -71,4 +71,3 @@ public class MapsTest {
         }
     }
 }
-
