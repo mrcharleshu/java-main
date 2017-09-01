@@ -7,7 +7,13 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -15,8 +21,18 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static com.charles.jdk8.stream.Gender.FEMALE;
+import static com.charles.jdk8.stream.Gender.MALE;
+import static com.charles.jdk8.stream.Nationality.AMERICA;
+import static com.charles.jdk8.stream.Nationality.CHINA;
 import static com.charles.utils.LineSeparators.hyphenSeparator;
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * 流底层核心其实是Spliterator接口的一个实现，而这个Spliterator接口其实本身就是Fork/Join并行框架的一个实现，
@@ -24,15 +40,21 @@ import static java.util.stream.Collectors.*;
  * 即：以递归的方式将可以并行的任务拆分成更小的子任务，然后将每个子任务的结果合并起来生成整体的最后结果
  */
 public class StreamUsage {
-
     public static void main(String[] args) {
+        streamDistinct();
         // forEach();
         // streamCommonUsage();
         // streamWithClasses();
         // countWordsByFlatMap();
         // simpleReduce();
-        reduceCombiner();
+        // reduceCombiner();
         // readFileContent();
+    }
+
+    private static void streamDistinct() {
+        List<String> strList = Lists.newArrayList("a", "b", "c", "d", "e", "f", "d", "a", "e");
+        String[] result = strList.stream().distinct().toArray(String[]::new);
+        Arrays.stream(result).forEach(System.out::println);
     }
 
     private static void forEach() {
@@ -48,24 +70,34 @@ public class StreamUsage {
     }
 
     private static void streamCommonUsage() {
-        Student student1 = new Student("Charles", 23, 'M');
-        Student student2 = new Student("Lucy", 18, 'F');
-        Student student3 = new Student("John", 34, 'M');
-        Student student4 = new Student("Amy", 54, 'F');
-        List<Student> students = Lists.newArrayList(student1, student2, student3, student4);
+        Student student1 = new Student("Charles", 27, MALE, CHINA);
+        Student student2 = new Student("Sonya", 25, FEMALE, CHINA);
+        Student student3 = new Student("Lucy", 18, FEMALE, AMERICA);
+        Student student4 = new Student("John", 34, MALE, AMERICA);
+        Student student5 = new Student("Amy", 54, FEMALE, AMERICA);
+        List<Student> students = Lists.newArrayList(student1, student2, student3, student4, student5);
         hyphenSeparator("streamCommonUsage map1");
         Map<String, Student> map1 = students.stream().collect(toMap(Student::getName, Function.identity()));
+        map1.entrySet().forEach(System.out::println);
         System.out.println(map1);
         hyphenSeparator("streamCommonUsage map2");
-        Map<Character, List<Student>> map2 = students.stream().collect(groupingBy(Student::getGender));
-        System.out.println(map2);
+        Map<Gender, List<Student>> map2 = students.stream().collect(groupingBy(Student::getGender));
+        map2.entrySet().forEach(System.out::println);
         hyphenSeparator("streamCommonUsage map3");
-        Map<Character, List<String>> map3 = students.stream().collect(groupingBy(Student::getGender,
-                mapping(Student::getName, toList())));
-        System.out.println(map3);
+        Map<Gender, List<String>> map3 = students.stream().collect(
+                groupingBy(Student::getGender, mapping(Student::getName, toList())));
+        map3.entrySet().forEach(System.out::println);
         hyphenSeparator("streamCommonUsage map4");
-        Map<Character, Long> map4 = students.stream().collect(groupingBy(Student::getGender, counting()));
-        System.out.println(map4);
+        Map<Gender, Map<Nationality, List<Student>>> map4 = students.stream().collect(
+                groupingBy(Student::getGender, groupingBy(Student::getCountry)));
+        map4.entrySet().forEach(System.out::println);
+        hyphenSeparator("streamCommonUsage map5");
+        Map<Gender, Map<Nationality, List<String>>> map5 = students.stream().collect(
+                groupingBy(Student::getGender, groupingBy(Student::getCountry, mapping(Student::getName, toList()))));
+        map5.entrySet().forEach(System.out::println);
+        hyphenSeparator("streamCommonUsage map6");
+        Map<Gender, Long> map6 = students.stream().collect(groupingBy(Student::getGender, counting()));
+        map6.entrySet().forEach(System.out::println);
         hyphenSeparator("streamCommonUsage map1 entrySet filter");
         List<String> nameList = map1.entrySet().stream().filter(entry -> entry.getValue().getAge() > 20).map(
                 entry -> entry.getValue().getName()).collect(toList());
@@ -163,7 +195,6 @@ public class StreamUsage {
         hyphenSeparator("Integer reduce 2");
         System.out.println(intList.stream().reduce(0, (result, element) -> result + element));
     }
-
 
     public static void reduceCombiner() {
         hyphenSeparator("Integer reduce with combiner 1");

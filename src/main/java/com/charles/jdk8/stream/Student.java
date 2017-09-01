@@ -1,14 +1,19 @@
 package com.charles.jdk8.stream;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 class Student {
     private String name;
     private int age;
-    private char gender;
+    private Gender gender;
+    private Nationality country;
 
-    public Student(String name, Integer age, char gender) {
+    public Student(String name, Integer age, Gender gender, Nationality country) {
         this.name = name;
         this.age = age;
         this.gender = gender;
+        this.country = country;
     }
 
     public String getName() {
@@ -27,16 +32,24 @@ class Student {
         this.age = age;
     }
 
-    public char getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(char gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public Nationality getCountry() {
+        return country;
+    }
+
+    public void setCountry(final Nationality country) {
+        this.country = country;
     }
 
     @Override
     public String toString() {
-        return "Student{" + "name='" + name + '\'' + ", age=" + age + ", gender='" + gender + '\'' + '}';
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

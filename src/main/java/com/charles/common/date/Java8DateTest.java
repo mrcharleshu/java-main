@@ -1,6 +1,13 @@
 package com.charles.common.date;
 
-import java.time.*;
+import java.time.Clock;
+import java.time.DayOfWeek;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.temporal.ChronoField;
@@ -14,6 +21,11 @@ import static com.charles.utils.LineSeparators.hyphenSeparator;
 public class Java8DateTest {
 
     public static void main(String[] args) {
+        hyphenSeparator("LocalDate Hello World");
+        LocalDate toDate = LocalDate.now();
+        LocalDate localDate = LocalDate.of(toDate.getYear(), toDate.getMonth(), 1);
+        System.out.println(localDate);
+        System.out.println(toDate);
         hyphenSeparator("Clock");
         // Clock 时钟
         // Clock类提供了访问当前日期和时间的方法，Clock是时区敏感的，可以用来取代 System.currentTimeMillis() 来获取当前的微秒数。
