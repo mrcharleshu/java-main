@@ -1,5 +1,8 @@
 package com.charles.common.date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.Clock;
 import java.time.DayOfWeek;
 import java.time.Instant;
@@ -19,6 +22,7 @@ import java.util.Set;
 import static com.charles.utils.LineSeparators.hyphenSeparator;
 
 public class Java8DateTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Java8DateTest.class);
 
     public static void main(String[] args) {
         hyphenSeparator("LocalDate Hello World");
@@ -31,12 +35,10 @@ public class Java8DateTest {
         // Clock类提供了访问当前日期和时间的方法，Clock是时区敏感的，可以用来取代 System.currentTimeMillis() 来获取当前的微秒数。
         // 某一个特定的时间点也可以使用Instant类来表示，Instant类也可以用来创建老的java.util.Date对象。
         Clock clock = Clock.systemDefaultZone();
-        long millis1 = clock.millis();
-        System.out.println(millis1);
-        System.out.println(System.currentTimeMillis());
-        Instant instant1 = clock.instant();
-        Date legacyDate1 = Date.from(instant1);   // legacy java.util.Date
-        System.out.println(legacyDate1);
+        LOGGER.info("clock millis = {}", clock.millis());
+        LOGGER.info("System currentTimeMillis = {}", System.currentTimeMillis());
+        // legacy java.util.Date
+        LOGGER.info("Date from Clock's instant = {}", Date.from(clock.instant()));
         hyphenSeparator("Timezones");
         // Timezones 时区
         // 在新API中时区使用ZoneId来表示。时区可以很方便的使用静态方法of来获取到。
@@ -64,8 +66,8 @@ public class Java8DateTest {
         System.out.println(late);       // 23:59:59
         DateTimeFormatter germanFormatter1 =
                 DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(Locale.GERMAN);
-        LocalTime leetTime = LocalTime.parse("13:37", germanFormatter1);
-        System.out.println(leetTime);   // 13:37
+        LocalTime localTime = LocalTime.parse("13:37", germanFormatter1);
+        System.out.println(localTime);   // 13:37
         hyphenSeparator("LocalDate");
         // LocalDate 表示了一个确切的日期，比如 2014-03-11。该对象值是不可变的，用起来和LocalTime基本一致。
         // 下面的例子展示了如何给Date对象加减天/月/年。另外要注意的是这些对象是不可变的，操作返回的总是一个新实例。
