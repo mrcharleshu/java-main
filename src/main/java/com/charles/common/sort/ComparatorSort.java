@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ComparatorSort {
+
     public static void main(String[] args) {
         List<ComparatorStudent> list = new ArrayList<>();// Java 7的钻石语法(构造器后面的尖括号中不需要写类型)
         list.add(new ComparatorStudent("Hao LUO", 33));
@@ -18,6 +19,7 @@ public class ComparatorSort {
         // 由于Java中没有函数指针、仿函数、委托这样的概念
         // 因此要将一个算法传入一个方法中唯一的选择就是通过接口回调
         // Collections.sort(list, Comparator.comparing(ComparatorStudent::getName));
+        // list.sort(Comparator.comparing(ComparatorStudent::getAge));
         Collections.sort(list, new Comparator<ComparatorStudent>() {
             @Override
             public int compare(ComparatorStudent o1, ComparatorStudent o2) {
@@ -26,27 +28,27 @@ public class ComparatorSort {
         });
         list.forEach(System.out::println);
     }
-}
 
-class ComparatorStudent {
-    private String name;
-    private Integer age;
+    private static class ComparatorStudent {
+        private String name;
+        private Integer age;
 
-    public ComparatorStudent(String name, Integer age) {
-        this.name = name;
-        this.age = age;
-    }
+        public ComparatorStudent(String name, Integer age) {
+            this.name = name;
+            this.age = age;
+        }
 
-    public String getName() {
-        return name;
-    }
+        public String getName() {
+            return name;
+        }
 
-    public Integer getAge() {
-        return age;
-    }
+        public Integer getAge() {
+            return age;
+        }
 
-    @Override
-    public String toString() {
-        return "Student [name=" + name + ", age=" + age + "]";
+        @Override
+        public String toString() {
+            return "Student [name=" + name + ", age=" + age + "]";
+        }
     }
 }

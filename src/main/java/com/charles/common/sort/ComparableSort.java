@@ -13,25 +13,25 @@ public class ComparableSort {
         set.add(new ComparableStudent("Bob YANG", 22));
         set.forEach(System.out::println);
     }
+
+    private static class ComparableStudent implements Comparable<ComparableStudent> {
+        private String name;
+        private int age;
+
+        public ComparableStudent(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        @Override
+        public String toString() {
+            return "ComparableStudent [name=" + name + ", age=" + age + "]";
+        }
+
+        @Override
+        public int compareTo(ComparableStudent o) {
+            return this.age - o.age; // 比较年龄(年龄的升序)
+        }
+    }
 }
 
-class ComparableStudent implements Comparable<ComparableStudent> {
-    private String name;
-    private int age;
-
-    public ComparableStudent(String name, int age) {
-        this.name = name;
-        this.age = age;
-    }
-
-    @Override
-    public String toString() {
-        return "ComparableStudent [name=" + name + ", age=" + age + "]";
-    }
-
-    @Override
-    public int compareTo(ComparableStudent o) {
-        return this.age - o.age; // 比较年龄(年龄的升序)
-    }
-
-}
