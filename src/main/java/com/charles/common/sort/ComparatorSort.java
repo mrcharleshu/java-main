@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ComparatorSort {
-
     public static void main(String[] args) {
         List<ComparatorStudent> list = new ArrayList<>();// Java 7的钻石语法(构造器后面的尖括号中不需要写类型)
         list.add(new ComparatorStudent("Hao LUO", 33));
@@ -22,7 +21,7 @@ public class ComparatorSort {
         Collections.sort(list, new Comparator<ComparatorStudent>() {
             @Override
             public int compare(ComparatorStudent o1, ComparatorStudent o2) {
-                return o1.getName().compareTo(o2.getName());
+                return o1.getAge().compareTo(o2.getAge());
             }
         });
         list.forEach(System.out::println);
@@ -31,9 +30,9 @@ public class ComparatorSort {
 
 class ComparatorStudent {
     private String name;
-    private int age;
+    private Integer age;
 
-    public ComparatorStudent(String name, int age) {
+    public ComparatorStudent(String name, Integer age) {
         this.name = name;
         this.age = age;
     }
@@ -42,7 +41,7 @@ class ComparatorStudent {
         return name;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
@@ -50,5 +49,4 @@ class ComparatorStudent {
     public String toString() {
         return "Student [name=" + name + ", age=" + age + "]";
     }
-
 }

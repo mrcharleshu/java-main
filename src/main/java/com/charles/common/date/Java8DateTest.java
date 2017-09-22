@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
@@ -25,6 +26,13 @@ public class Java8DateTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(Java8DateTest.class);
 
     public static void main(String[] args) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(1505209914826L);
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(calendar.toInstant(), ZoneId.systemDefault());
+        System.out.println(localDateTime);
+        System.out.println(localDateTime.toLocalDate());
+        System.out.println(localDateTime.toLocalTime());
+
         hyphenSeparator("LocalDate Hello World");
         LocalDate toDate = LocalDate.now();
         LocalDate localDate = LocalDate.of(toDate.getYear(), toDate.getMonth(), 1);
