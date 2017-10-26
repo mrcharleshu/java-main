@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
  * https://github.com/thoeni/inetTester
  */
 public class InetTester {
+
     public static void main(String[] args) throws UnknownHostException {
         final Clock clock = new NanoClock();
         System.out.printf("Calling the hostname resolution method...%n");
