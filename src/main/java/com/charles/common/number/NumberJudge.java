@@ -1,8 +1,10 @@
 package com.charles.common.number;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class NumberJudge {
+
     public static void main(String[] args) {
         System.out.println(isStrNumber1("123"));
         System.out.println(isStrNumber1("code"));
@@ -12,8 +14,7 @@ public class NumberJudge {
 
     private static boolean isStrNumber1(String str) {
         try {
-            Integer.parseInt(str);
-            return true;
+            return Optional.ofNullable(str).map(Integer::parseInt).isPresent();
         } catch (NumberFormatException e) {
             return false;
         }
