@@ -32,91 +32,91 @@ public class DepositThread {
         }
         logger.info("账户余额: {}", account.getBalance());
     }
-}
-
-/**
- * 银行账户
- */
-class Account {
-    private static final Logger logger = LoggerFactory.getLogger(Account.class);
-    private double balance;     // 账户余额
 
     /**
-     * 存款
-     * @param money 存入金额
+     * 银行账户
      */
-    public synchronized void deposit(double money) {
-        double newBalance = balance + money;
-        try {
-            Thread.sleep(10);   // 模拟此业务需要一段处理时间
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-        }
-        balance = newBalance;
-        logger.debug("Balance={}, deposit={}", balance, money);
-    }
+    private static class Account {
+        private static final Logger logger = LoggerFactory.getLogger(Account.class);
+        private double balance;     // 账户余额
 
-    public double getBalance() {
-        return balance;
-    }
-}
-
-/**
- * 存钱线程
- */
-class DepositTask implements Runnable {
-    private static final Logger logger = LoggerFactory.getLogger(DepositTask.class);
-    private Account account;    // 存入账户
-    private double money;       // 存入金额
-
-    public DepositTask(Account account, double money) {
-        this.account = account;
-        this.money = money;
-    }
-
-    @Override
-    public void run() {
-        logger.debug("Before Deposit: Balance={}", account.getBalance());
-        // synchronized (account) {
-        account.deposit(money);
-        //}
-        logger.debug("After Deposit: Balance={}", account.getBalance());
-    }
-}
-
-/**
- * Java 5通过Lock接口提供了显式的锁机制（explicit lock），增强了灵活性以及对线程的协调。
- * Lock接口中定义了加锁（lock()）和解锁（unlock()）的方法，同时还提供了newCondition()方法来产生用于线程之间通信的Condition对象；
- * 此外，Java 5还提供了信号量机制（semaphore），信号量可以用来限制对某个共享资源进行访问的线程的数量。
- * 在对资源进行访问之前，线程必须得到信号量的许可（调用Semaphore对象的acquire()方法）；
- * 在完成对资源的访问后，线程必须向信号量归还许可（调用Semaphore对象的release()方法）
- */
-class LockAccount {
-    private static final Logger logger = LoggerFactory.getLogger(LockAccount.class);
-    private Lock accountLock = new ReentrantLock();
-    private double balance; // 账户余额
-
-    /**
-     * 存款
-     * @param money 存入金额
-     */
-    public void deposit(double money) {
-        accountLock.lock();
-        try {
+        /**
+         * 存款
+         * @param money 存入金额
+         */
+        public synchronized void deposit(double money) {
             double newBalance = balance + money;
             try {
-                Thread.sleep(10); // 模拟此业务需要一段处理时间
+                Thread.sleep(10);   // 模拟此业务需要一段处理时间
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
             balance = newBalance;
-        } finally {
-            accountLock.unlock();
+            logger.debug("Balance={}, deposit={}", balance, money);
         }
-        logger.debug("Balance={}, deposit={}", balance, money);
+
+        public double getBalance() {
+            return balance;
+        }
     }
 
-    public double getBalance() {
-        return balance;
+    /**
+     * 存钱线程
+     */
+    private static class DepositTask implements Runnable {
+        private static final Logger logger = LoggerFactory.getLogger(DepositTask.class);
+        private Account account;    // 存入账户
+        private double money;       // 存入金额
+
+        public DepositTask(Account account, double money) {
+            this.account = account;
+            this.money = money;
+        }
+
+        @Override
+        public void run() {
+            logger.debug("Before Deposit: Balance={}", account.getBalance());
+            // synchronized (account) {
+            account.deposit(money);
+            //}
+            logger.debug("After Deposit: Balance={}", account.getBalance());
+        }
+    }
+
+    /**
+     * Java 5通过Lock接口提供了显式的锁机制（explicit lock），增强了灵活性以及对线程的协调。
+     * Lock接口中定义了加锁（lock()）和解锁（unlock()）的方法，同时还提供了newCondition()方法来产生用于线程之间通信的Condition对象；
+     * 此外，Java 5还提供了信号量机制（semaphore），信号量可以用来限制对某个共享资源进行访问的线程的数量。
+     * 在对资源进行访问之前，线程必须得到信号量的许可（调用Semaphore对象的acquire()方法）；
+     * 在完成对资源的访问后，线程必须向信号量归还许可（调用Semaphore对象的release()方法）
+     */
+    private static class LockAccount {
+        private static final Logger logger = LoggerFactory.getLogger(LockAccount.class);
+        private Lock accountLock = new ReentrantLock();
+        private double balance; // 账户余额
+
+        /**
+         * 存款
+         * @param money 存入金额
+         */
+        public void deposit(double money) {
+            accountLock.lock();
+            try {
+                double newBalance = balance + money;
+                try {
+                    Thread.sleep(10); // 模拟此业务需要一段处理时间
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+                balance = newBalance;
+            } finally {
+                accountLock.unlock();
+            }
+            logger.debug("Balance={}, deposit={}", balance, money);
+        }
+
+        public double getBalance() {
+            return balance;
+        }
     }
 }

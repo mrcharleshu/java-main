@@ -22,21 +22,23 @@ public class ThreadCallable {
         }
         System.out.println(sum);
     }
-}
 
-class CallableTask implements Callable<Integer> {
-    private int upperBounds;
 
-    public CallableTask(int upperBounds) {
-        this.upperBounds = upperBounds;
-    }
+    private static class CallableTask implements Callable<Integer> {
+        private int upperBounds;
 
-    @Override
-    public Integer call() throws Exception {
-        int sum = 0;
-        for (int i = 1; i <= upperBounds; i++) {
-            sum += i;
+        public CallableTask(int upperBounds) {
+            this.upperBounds = upperBounds;
         }
-        return sum;
+
+        @Override
+        public Integer call() throws Exception {
+            int sum = 0;
+            for (int i = 1; i <= upperBounds; i++) {
+                sum += i;
+            }
+            return sum;
+        }
     }
 }
+
