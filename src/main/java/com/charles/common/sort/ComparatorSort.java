@@ -14,6 +14,7 @@ public class ComparatorSort {
         list.add(new ComparatorStudent("XJ WANG", 32, 168));
         list.add(new ComparatorStudent("Bob YANG", 22, 183));
         list.add(new ComparatorStudent("Bruce LEE", 33, 174));
+        list.add(new ComparatorStudent("Abraham", 33, 174));
         list.add(new ComparatorStudent("Charles", 32, 177));
         list.add(new ComparatorStudent("Sonya", 25, 162));
 
@@ -26,7 +27,9 @@ public class ComparatorSort {
         // list.forEach(System.out::println);
         hyphenSeparator();
         // complexSort(list);
-        list.sort(Comparator.comparing(ComparatorStudent::getAge).thenComparing(ComparatorStudent::getHeight));
+        list.sort(Comparator.comparing(ComparatorStudent::getAge)
+                .thenComparing(ComparatorStudent::getHeight)
+                .thenComparing(ComparatorStudent::getName));
         list.forEach(System.out::println);
     }
 
