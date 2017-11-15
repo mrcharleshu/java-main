@@ -7,7 +7,7 @@ import java.util.List;
 import static com.charles.utils.LineSeparators.hyphenSeparator;
 
 public class ComparatorSort {
-    
+
     public static void main(String[] args) {
         List<ComparatorStudent> list = new ArrayList<>();// Java 7的钻石语法(构造器后面的尖括号中不需要写类型)
         list.add(new ComparatorStudent("Hao LUO", 33, 175));
@@ -24,7 +24,12 @@ public class ComparatorSort {
         // 因此要将一个算法传入一个方法中唯一的选择就是通过接口回调
         // Collections.sort(list, Comparator.comparing(ComparatorStudent::getName));
         // list.sort(Comparator.comparing(ComparatorStudent::getAge));
+        // list.sort((o1, o2) -> o2.getAge().compareTo(o1.getAge()));
         // list.forEach(System.out::println);
+        list.sort(((Comparator<ComparatorStudent>) (o1, o2) -> o2.getAge().compareTo(o1.getAge()))
+                .thenComparing(ComparatorStudent::getHeight)
+                .thenComparing(ComparatorStudent::getName));
+        list.forEach(System.out::println);
         hyphenSeparator();
         // complexSort(list);
         list.sort(Comparator.comparing(ComparatorStudent::getAge)
