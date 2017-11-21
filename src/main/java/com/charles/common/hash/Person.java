@@ -80,7 +80,7 @@ public class Person {
     }
 
     public static void main(String[] args) {
-        Set<Person> set = new HashSet<Person>();
+        Set<Person> set = new HashSet<>();
         Person p1 = new Person(11, 1, "张三");
         Person p2 = new Person(12, 1, "李四");
         Person p3 = new Person(11, 1, "张三");
