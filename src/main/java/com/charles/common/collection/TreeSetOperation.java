@@ -3,6 +3,7 @@ package com.charles.common.collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.TreeSet;
 
 import static com.charles.utils.LineSeparators.hyphenSeparator;
@@ -23,6 +24,10 @@ public class TreeSetOperation {
         System.out.println(set.add(value));
     }
 
+    private void addAll(Double... values) {
+        System.out.println(set.addAll(Arrays.asList(values)));
+    }
+
     public static void main(String[] args) {
         TreeSetOperation operation = new TreeSetOperation();
         // set.add(null); //不能为空，没有compare方法去比较元素的大小
@@ -33,6 +38,7 @@ public class TreeSetOperation {
         operation.add(5.9);
         operation.add(12.41);
         operation.add(3.54);//有重复返回false
+        operation.addAll(3.12, 7.45, 9.234, 11.23);
         hyphenSeparator();
         TreeSet<Double> set = operation.getSet();
         System.out.println(set);
