@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ListRemoveInForeachLoop implements Iterable<String> {
-    private static final int LIST_SIZE = 100;
+    private static final int LIST_SIZE = 10;
     private final List<String> list = Lists.newArrayList();
 
     private ListRemoveInForeachLoop() {
@@ -46,7 +46,7 @@ public class ListRemoveInForeachLoop implements Iterable<String> {
     }
 
     public static void main(String[] args) {
-        // foreachRemove();
         forRemove();
+        foreachRemove();
     }
 }
