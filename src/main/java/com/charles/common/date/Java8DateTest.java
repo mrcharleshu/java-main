@@ -27,13 +27,6 @@ public class Java8DateTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(Java8DateTest.class);
 
     public static void main(String[] args) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(1505209914826L);
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(calendar.toInstant(), ZoneId.systemDefault());
-        System.out.println(localDateTime);
-        System.out.println(localDateTime.toLocalDate());
-        System.out.println(localDateTime.toLocalTime());
-
         hyphenSeparator("LocalDate Hello World");
         LocalDate toDate = LocalDate.now();
         LocalDate localDate = LocalDate.of(toDate.getYear(), toDate.getMonth(), 1);
@@ -66,10 +59,6 @@ public class Java8DateTest {
         LocalTime now1 = LocalTime.now(zone1);
         LocalTime now2 = LocalTime.now(zone2);
         System.out.println(now1.isBefore(now2));  // false
-        long hoursBetween = ChronoUnit.HOURS.between(now1, now2);
-        long minutesBetween = ChronoUnit.MINUTES.between(now1, now2);
-        System.out.println(hoursBetween);       // -3
-        System.out.println(minutesBetween);     // -239
         // LocalTime 提供了多种工厂方法来简化对象的创建，包括解析时间字符串。
         LocalTime late = LocalTime.of(23, 59, 59);
         System.out.println(late);       // 23:59:59
@@ -112,7 +101,5 @@ public class Java8DateTest {
         System.out.println(string);     // Nov 03, 2014 - 07:13
         // 和java.text.NumberFormat不一样的是新版的DateTimeFormatter是不可变的，所以它是线程安全的。
         // 关于时间日期格式的详细信息：http://download.java.net/jdk8/docs/api/java/time/format/DateTimeFormatter.html
-        //打印当前时间LocalDateTime的毫秒
-        System.out.println(LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli());
     }
 }
