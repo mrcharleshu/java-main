@@ -1,4 +1,4 @@
-package com.charles.algorithm;
+package com.charles.algorithm.backtracking;
 
 public class Queen8 {
     private int maxNum;
