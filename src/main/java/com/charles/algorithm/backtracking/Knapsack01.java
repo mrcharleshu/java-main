@@ -19,9 +19,15 @@ public class Knapsack01 {
     private Map<Integer, int[]> resultsMap = new HashMap<>();
     private int[] selections;
     private int maxW = Integer.MIN_VALUE; // 存储背包中物品总重量的最大值
+    private int[] items; // 表示每个物品的重量
+    private int n; // 表示物品个数
+    private int w; // 背包承受的最大重量
 
-    private Knapsack01(int length) {
-        selections = new int[length];
+    private Knapsack01(int[] items, int w) {
+        this.items = items;
+        this.n = items.length;
+        this.w = w;
+        this.selections = new int[this.n];
     }
 
     private String getSpaces(int which) {
@@ -44,13 +50,10 @@ public class Knapsack01 {
     }
 
     /**
-     * @param i     表示考察到哪个物品了
-     * @param cw    表示当前已经装进去的物品的重量和
-     * @param items 表示每个物品的重量
-     * @param n     表示物品个数
-     * @param w     背包重量
+     * @param i  表示考察到哪个物品了
+     * @param cw 表示当前已经装进去的物品的重量和
      */
-    public void f(int i, int cw, int[] items, int n, int w) {
+    public void f(int i, int cw) {
         if (cw == w || i == n) { // cw==w 表示装满了 ;i==n 表示已经考察完所有的物品
             if (cw > maxW) {
                 maxW = cw;
@@ -65,22 +68,20 @@ public class Knapsack01 {
         }
         System.out.println(String.format("%s不把第 %d 个物品[%d]装进去", getSpaces(i), i + 1, items[i]));
         selections[i] = 0;
-        f(i + 1, cw, items, n, w); // 不把第i个物品装进去
+        f(i + 1, cw); // 不把第i个物品装进去
         System.out.println(String.format("%s把第 %d 个物品[%d]装进去", getSpaces(i), i + 1, items[i])
                 + ((cw + items[i] <= w) ? "" : "【包已满，这个放不进去了】"));
         if (cw + items[i] <= w) {// 已经超过可以背包承受的重量的时候，就不要再装了
             selections[i] = items[i];
-            f(i + 1, cw + items[i], items, n, w); // 把第i个物品装进去
+            f(i + 1, cw + items[i]); // 把第i个物品装进去
         }
     }
 
     public static void main(String[] args) {
-        // int[] a = new int[]{19, 31, 40, 35, 28, 23, 12, 7};
-        int[] a = new int[]{19, 31, 40, 35};
-        // 假设背包可承受重量 100，物品个数 4，物品重量存储在数组 a 中，那可以这样调用函数：
-        // f(0, 0, a, 4, 100)
-        Knapsack01 knapsack01 = new Knapsack01(a.length);
-        knapsack01.f(0, 0, a, a.length, 100);
+        // int[] items = new int[]{19, 31, 40, 35, 28, 23, 12, 7};
+        int[] items = new int[]{19, 31, 40, 35};
+        Knapsack01 knapsack01 = new Knapsack01(items, 100);
+        knapsack01.f(0, 0);
         knapsack01.printAllSolution();
         knapsack01.printOptimalSolution();
     }
