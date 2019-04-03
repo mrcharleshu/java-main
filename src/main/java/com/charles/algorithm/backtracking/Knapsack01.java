@@ -13,6 +13,10 @@ import java.util.Map;
  * 每个阶段对应一个物品怎么选择。先对第一个物品进行处理，选择装进去或者不装进去，然后再递归地处理剩下的物品。
  * <p>
  * 日志输出能表明整个穷举的思路
+ * 第一个不放，第二个不放，……，第n-1个不放，第n个不放。
+ * 第一个不放，第二个不放，……，第n-1个不放，第n个放。
+ * 第一个不放，第二个不放，……，第n-1个放，第n个不放。
+ * 第一个不放，第二个不放，……，第n-1个放，第n个放。
  */
 public class Knapsack01 {
     private static final String EMPTY_SPACE_4 = "    ";
@@ -54,6 +58,8 @@ public class Knapsack01 {
      * @param cw 表示当前已经装进去的物品的重量和
      */
     public void f(int i, int cw) {
+        // 打印递归树，当传入items中有重复的数据时，当前递归逻辑有重复计算的问题
+        // System.out.println(String.format("%s%d-%d", getSpaces(i), i, cw));
         if (cw == w || i == n) { // cw==w 表示装满了 ;i==n 表示已经考察完所有的物品
             if (cw > maxW) {
                 maxW = cw;
