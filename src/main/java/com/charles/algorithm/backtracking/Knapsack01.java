@@ -60,7 +60,7 @@ public class Knapsack01 {
     public void f(int i, int cw) {
         // 打印递归树，当传入items中有重复的数据时，当前递归逻辑有重复计算的问题
         // System.out.println(String.format("%s%d-%d", getSpaces(i), i, cw));
-        if (cw == w || i == n) { // cw==w 表示装满了 ;i==n 表示已经考察完所有的物品
+        if (cw == w || i == n) { // cw==w 表示装满了; i==n 表示已经考察完所有的物品
             if (cw > maxW) {
                 maxW = cw;
                 resultsMap.put(maxW, Arrays.copyOf(selections, n));
