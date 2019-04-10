@@ -85,7 +85,7 @@ public class Knapsack01 {
 
     public static void main(String[] args) {
         // int[] items = new int[]{19, 31, 40, 35, 28, 23, 12, 7};
-        int[] items = new int[]{19, 31, 40, 35};
+        int[] items = new int[]{19, 32, 40, 37};
         Knapsack01 knapsack01 = new Knapsack01(items, 100);
         knapsack01.f(0, 0);
         knapsack01.printAllSolution();
