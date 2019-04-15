@@ -9,7 +9,7 @@ public class JavaProperties {
 
     public static void main(String[] args) throws IOException {
         String projectPath = System.getProperty("user.dir");
-        String path = projectPath + "/src/main/resources/application.properties";
+        String path = projectPath + "/src/main/resources/application.yml";
         System.out.println(getValueByKey(path, "name"));
     }
 
