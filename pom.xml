@@ -29,6 +29,7 @@
         <!--<quartz.version>2.2.1</quartz.version>-->
         <pinyin4j.version>2.5.1</pinyin4j.version>
         <gson.version>2.7</gson.version>
+        <pdfbox.version>2.0.15</pdfbox.version>
         <jxls.version>2.3.0</jxls.version>
         <jxls-poi.version>1.0.9</jxls-poi.version>
         <jxls-jexcel.version>1.0.6</jxls-jexcel.version>
@@ -95,6 +96,16 @@
             <groupId>com.belerweb</groupId>
             <artifactId>pinyin4j</artifactId>
             <version>${pinyin4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>${pdfbox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox-tools</artifactId>
+            <version>${pdfbox.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jxls</groupId>
