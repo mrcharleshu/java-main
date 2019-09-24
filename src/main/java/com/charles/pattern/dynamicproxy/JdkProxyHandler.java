@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 
 /**
  * @author Charles
+ * JDK动态代理实现InvocationHandler接口
  */
 @Slf4j
 public class JdkProxyHandler implements InvocationHandler {
