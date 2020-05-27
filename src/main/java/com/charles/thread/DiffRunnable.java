@@ -1,5 +1,7 @@
 package com.charles.thread;
 
+import org.openjdk.jol.info.ClassLayout;
+
 public class DiffRunnable {
 
     public static void main(String[] args) {
@@ -18,19 +20,26 @@ public class DiffRunnable {
 
     private static void testRunnable() {
         MyRunnable mt = new MyRunnable();
-        new Thread(mt).start();//同一个mt，但是在Thread中就不可以，如果用同一
-        new Thread(mt).start();//个实例化对象mt，就会出现异常
-        new Thread(mt).start();
+        // 同一个mt，但是在Thread中就不可以，如果用同一个实例化对象mt，就会出现异常
+        Thread thread1 = new Thread(mt);
+        Thread thread2 = new Thread(mt);
+        Thread thread3 = new Thread(mt);
+
+        thread1.start();
+        thread2.start();
+        thread3.start();
     }
 
     // Thread类也是Runnable接口的子类
     private static class MyThread extends Thread {
         private int ticket = 10;
 
+        @Override
         public void run() {
             for (int i = 0; i < 20; i++) {
                 if (this.ticket > 0) {
-                    System.out.println(Thread.currentThread().getName() + "卖票：ticket" + this.ticket--);
+                    Thread thread = Thread.currentThread();
+                    System.out.println(String.format("[%s-%s]卖票：ticket%s", thread.getId(), thread.getName(), this.ticket--));
                 }
             }
         }
@@ -39,10 +48,15 @@ public class DiffRunnable {
     private static class MyRunnable implements Runnable {
         private int ticket = 10;
 
+        @Override
         public void run() {
-            for (int i = 0; i < 20; i++) {
-                if (this.ticket > 0) {
-                    System.out.println(Thread.currentThread().getName() + "卖票：ticket" + this.ticket--);
+            synchronized (this) {
+                System.out.println(ClassLayout.parseInstance(this).toPrintable());
+                for (int i = 0; i < 3; i++) {
+                    if (this.ticket > 0) {
+                        Thread thread = Thread.currentThread();
+                        System.out.println(String.format("[%s-%s]卖票：ticket%s", thread.getId(), thread.getName(), this.ticket--));
+                    }
                 }
             }
         }

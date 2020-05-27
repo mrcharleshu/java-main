@@ -16,6 +16,8 @@ public class TwoCollCrossMethod {
     public static void main(String[] args) {
         List<String> list1 = Lists.newArrayList("1111", "2222", "3333");
         List<String> list2 = Lists.newArrayList("4444", "5555", "3333");
+        list1.retainAll(null);
+        System.out.println(list1);
         // list1.retainAll(list2);//交集
         // list1.addAll(list2);//并集
         list1.removeAll(list2);//差集(去掉相同的部分)

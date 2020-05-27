@@ -24,6 +24,8 @@ public class NumberFormat {
         format4.setMaximumFractionDigits(2);
         java.text.NumberFormat format5 = java.text.NumberFormat.getNumberInstance(Locale.CHINA);
         format5.setMaximumFractionDigits(2);
+        DecimalFormat format6 = new DecimalFormat("#,##0.000");
+        format6.setMaximumFractionDigits(2);
         format(format1, 0.00, 23, 12.3, 0.3456789, 12123124231421.1231231234123);
         hyphenSeparator("2");
         format(format2, 0.00, 23, 12.3, 0.3456789, 12123124231421.1231231234123);
@@ -33,10 +35,14 @@ public class NumberFormat {
         format(format4, 0.00, 23, 12.3, 0.3456789, 12123124231421.1231231234123);
         hyphenSeparator("5");
         format(format5, 0.00, 23, 12.3, 0.3456789, 12123124231421.1231231234123);
+        hyphenSeparator("6");
+        format(format6, 0.00, 23, 12.3, 0.3456789, 12123124231421.1231231234123);
         hyphenSeparator("String formatter");
         stringFormat(0.00, 23, 12.3, 0.3456789, 12123124231421.1231231234123);
         hyphenSeparator("BigDecimal formatter");
         bigDecimalFormat(0.00, 23, 12.3, 0.3456789, 12123124231421.1231231234123);
+        System.out.println(new BigDecimal("12123124231421.12"));
+        System.out.println(new BigDecimal("12,123,124,231,421.12".replace(",", "")));
     }
 
     private static void format(final DecimalFormat formatter, final double... values) {
