@@ -1,9 +1,12 @@
 package com.charles.thread;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -14,6 +17,9 @@ import static com.charles.utils.LineSeparators.hyphenSeparator;
  * 否则如果你的任务是cpu密集型的，使用比处理器更多的线程是没有意义的，所以选择parallel stream，因为它更容易使用.
  * http://fahdshariff.blogspot.com/2016/06/java-8-completablefuture-vs-parallel.html
  * https://blog.csdn.net/mingliangniwo/article/details/81708468
+ *
+ * @implNote -Djava.util.concurrent.ForkJoinPool.common.parallelism=8可以影响ForkJoinPool.common()的线程池数量
+ * @see java.util.concurrent.ForkJoinPool
  */
 public class ParallelStreamVsCompletableFuture {
 
@@ -22,12 +28,23 @@ public class ParallelStreamVsCompletableFuture {
         List<SimpleTask> tasks = IntStream.range(0, 20)
                 .mapToObj(i -> new SimpleTask(1))
                 .collect(Collectors.toList());
-        hyphenSeparator();
+        // runParallelStreamVsCompletableFuture(tasks);
+        runForkJoinPool(tasks);
+    }
+
+    private static void runParallelStreamVsCompletableFuture(List<SimpleTask> tasks) {
+        hyphenSeparator("useParallelStream");
         useParallelStream(tasks);
-        hyphenSeparator();
+        hyphenSeparator("useCompletableFuture");
         useCompletableFuture(tasks);
-        hyphenSeparator();
+        hyphenSeparator("useCompletableFutureWithExecutor");
         useCompletableFutureWithExecutor(tasks);
+        hyphenSeparator();
+    }
+
+    private static void runForkJoinPool(List<SimpleTask> tasks) {
+        hyphenSeparator("useForkJoinPool");
+        useForkJoinPool(tasks);
         hyphenSeparator();
     }
 
@@ -99,5 +116,21 @@ public class ParallelStreamVsCompletableFuture {
         System.out.printf("Processed %d tasks in %d millis\n", tasks.size(), duration);
         System.out.println(result);
         executor.shutdown();
+    }
+
+    public static void useForkJoinPool(List<SimpleTask> tasks) {
+        long start = System.nanoTime();
+        ForkJoinPool forkJoinPool = new ForkJoinPool(20);
+        List<Integer> result = null;
+        try {
+            Callable<List<Integer>> callable = () ->
+                    tasks.parallelStream().map(SimpleTask::calculate).collect(Collectors.toList());
+            result = forkJoinPool.submit(callable).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        long duration = (System.nanoTime() - start) / 1_000_000;
+        System.out.printf("Processed %d tasks in %d millis\n", tasks.size(), duration);
+        System.out.println(result);
     }
 }
