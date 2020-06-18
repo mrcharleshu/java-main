@@ -7,6 +7,8 @@ import org.apache.commons.pool2.impl.DefaultPooledObject;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -28,6 +30,7 @@ public class JdbcPooledObjectFactory implements PooledObjectFactory<Connection> 
         this.properties.put("url", "jdbc:mysql://localhost:3306/purchaser_auth");
         this.properties.put("user", "root");
         this.properties.put("password", "root_pwd");
+        List<Integer>[] intListArr = new ArrayList[4];
     }
 
     @Override
@@ -40,6 +43,20 @@ public class JdbcPooledObjectFactory implements PooledObjectFactory<Connection> 
         Class.forName(driver);
         Connection connection = DriverManager.getConnection(url, user, password);
         return new DefaultPooledObject<>(connection);
+        // List<Dog> dogs = new ArrayList<Dog>(); // Dog的超类是Animal
+        // List<Animal> animals = dogs; // 把dogs的引用赋给animals超类，这也没问题
+        // List<Integer> arrayOfIntegerList[] = new ArrayList<Integer>[10];
+        // animals.add(new Cat()); // Cat是超类Animal的另一个实现
+        // Dog dog = dogs.get(0);
+
+    }
+
+    interface Animal {
+    }
+
+    private static class Dog implements Animal {
+    }
+    private static class Cat implements Animal {
     }
 
     @Override

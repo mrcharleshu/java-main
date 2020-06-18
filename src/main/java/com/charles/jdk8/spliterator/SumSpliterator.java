@@ -1,4 +1,4 @@
-package com.charles.jdk8;
+package com.charles.jdk8.spliterator;
 
 import java.util.Spliterator;
 import java.util.function.Consumer;
@@ -7,6 +7,11 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
+ * java 8 stream中的Spliterator简介
+ * https://www.cnblogs.com/flydean/p/java-8-stream-spliterator.html
+ * baeldung Introduction to Spliterator in Java
+ * https://www.baeldung.com/java-spliterator
+ * <p>
  * Spliterator是Java 8引入的新接口，顾名思义，Spliterator可以理解为Iterator的Split版本（但用途要丰富很多）。
  * 使用Iterator的时候，我们可以顺序地遍历容器中的元素，使用Spliterator的时候，
  * 我们可以将元素分割成多份，分别交于不于的线程去遍历，以提高效率。

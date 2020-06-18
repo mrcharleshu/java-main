@@ -1,4 +1,4 @@
-package com.charles.java8;
+package com.charles.jdk8.spliterator;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -8,11 +8,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-/***************************************
- * @author:Alex Wang
- * @Date:2016/11/3 QQ:532500648
- * QQ交流群:286081824
- ***************************************/
 public class SpliteratorInAction {
 
     private static String text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam in lacinia massa, quis eleifend dui. Sed in molestie ex. Curabitur id dui orci. Aenean pulvinar, tortor et egestas semper, mauris lectus malesuada ex, quis commodo urna nulla vitae eros. Cras scelerisque vel ligula at suscipit. Maecenas non ipsum quis est malesuada lobortis. Cras porta tortor elit, ut dictum ipsum pellentesque in. Mauris ut sollicitudin tellus.\n" +
@@ -45,13 +40,11 @@ public class SpliteratorInAction {
             "\n" +
             "Maecenas dictum arcu nec nisi sollicitudin, vel varius odio ornare. Nunc venenatis neque bibendum fringilla consectetur. Curabitur arcu ante, volutpat non volutpat nec, lobortis et est. Praesent porta lacus et nisi blandit porttitor. Maecenas nisl sapien, lobortis sit amet dictum ut, ultrices ac risus. Nullam id augue tincidunt, sollicitudin nibh sit amet, finibus nulla. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras laoreet sed nunc eget luctus. Praesent nec venenatis libero, eget convallis ante. Maecenas tincidunt fringilla elit, sed dapibus quam dignissim ac. Nunc quis efficitur orci. Pellentesque id mi finibus est ullamcorper tincidunt. Donec tincidunt lorem id condimentum interdum. In luctus enim eget lacinia auctor.";
 
-
     public static void main(String[] args) {
         MySpliteratorText mySpliteratorText = new MySpliteratorText(text);
-        Optional.ofNullable(mySpliteratorText.parallelStream().count())
-                .ifPresent(System.out::println);
+        Optional.of(mySpliteratorText.parallelStream().count()).ifPresent(System.out::println);
 
-       // mySpliteratorText.stream().forEach(System.out::println);
+        // mySpliteratorText.stream().forEach(System.out::println);
 
         mySpliteratorText.parallelStream().filter(s -> !s.equals("")).forEach(System.out::println);
 
@@ -71,7 +64,7 @@ public class SpliteratorInAction {
      * T
      * s getString("")
      * t.set()
-     *
+     * <p>
      * Object
      * List<Object></Object>
      */
