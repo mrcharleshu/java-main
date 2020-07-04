@@ -1,31 +1,37 @@
 package com.charles.thread;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 1、一个整数(都是有符号)在jvm 占用了4个字节，共32bits
- * 2、最高位的bit代表符号位，0:整数、1：负数；剩余的31bits则代表数字部分；
- * 3、对于负数而言，是以补码的形式存储在内存中的。以-7（int）为例
- * 第一步：将-7的绝对值转化为二进制 0000 0111
- * 第二步：将上面的二进制以反码表示 1111 1000
- * 第三步：转化为补码：11111111111111111111111111111001
+ * 1、一个整数在jvm中占用了4个字节，共32bits
+ * 2、最高位的bit代表符号位，0为正数、1为负，剩余的31bits则代表数字部分
+ * 3、反码加1即为补码
+ * 4、对于负数而言，是以补码的形式存储在内存中的。以-7（int）为例
+ * ---- 1)、将-7的绝对值转化为二进制：
+ * -------- 0000 0000 0000 0000 0000 0000 0000 0111
+ * ---- 2)：将上面的二进制以反码表示：
+ * -------- 1111 1111 1111 1111 1111 1111 1111 1000
+ * ---- 3)：转化为补码：
+ * -------- 1111 1111 1111 1111 1111 1111 1111 1001
  * @author Charles
  */
+@Slf4j
 public class ThreadPoolExecutorCtlAnalysis {
     private static final int COUNT_BITS = Integer.SIZE - 3;
     private static final int CAPACITY = (1 << COUNT_BITS) - 1;// 000,11111111111111111111111111111
 
     // runState is stored in the high-order bits
-    private static final int RUNNING = -1 << COUNT_BITS;  // 111,00000000000000000000000000000
-    private static final int SHUTDOWN = 0 << COUNT_BITS;  // 000,00000000000000000000000000000
-    private static final int STOP = 1 << COUNT_BITS;      // 001,00000000000000000000000000000
-    private static final int TIDYING = 2 << COUNT_BITS;   // 010,00000000000000000000000000000
+    private static final int RUNNING    = -1 << COUNT_BITS;  // 111,00000000000000000000000000000
+    private static final int SHUTDOWN   = 0 << COUNT_BITS;  // 000,00000000000000000000000000000
+    private static final int STOP       = 1 << COUNT_BITS;      // 001,00000000000000000000000000000
+    private static final int TIDYING    = 2 << COUNT_BITS;   // 010,00000000000000000000000000000
     private static final int TERMINATED = 3 << COUNT_BITS;// 011,00000000000000000000000000000
 
     // Packing and unpacking ctl
@@ -46,6 +52,12 @@ public class ThreadPoolExecutorCtlAnalysis {
         return c & CAPACITY;
     }
 
+    /**
+     * 通过与运算把RunState和WorkerCount的值合并到一处，即最终的ctl的值
+     * @param rs RunState运行状态
+     * @param wc WorkerCount工作线程数
+     * @return int
+     */
     private static int ctlOf(int rs, int wc) {
         return rs | wc;
     }
@@ -53,38 +65,66 @@ public class ThreadPoolExecutorCtlAnalysis {
     private static Runnable buildRunnableTask() {
         return () -> {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(2500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("Task finished.");
+            log.info("Task finished.");
         };
     }
 
-    private static int getCtlValue(ThreadPoolExecutor executor, Field ctlField) {
+    private static int getCtlValue(ThreadPoolExecutor executor, Field field) {
         //noinspection ConstantConditions
-        return ((AtomicInteger) ReflectionUtils.getField(ctlField, executor)).get();
+        return ((AtomicInteger) ReflectionUtils.getField(field, executor)).get();
+    }
+
+    private static String formatBinaryString(int state) {
+        StringBuilder binaryString = new StringBuilder(Integer.toBinaryString(state));
+        if (binaryString.length() < Integer.SIZE) {
+            for (int i = binaryString.length(); i < Integer.SIZE; i++) {
+                binaryString.insert(0, "0");
+            }
+        }
+        return binaryString.substring(0, 3) + "," + binaryString.substring(3, Integer.SIZE);
+    }
+
+    private static void peekThreadPoolExecuteState(ThreadPoolExecutor executor, Field ctlField) {
+        log.info("------------------- ThreadPoolExecuteState -------------------");
+        int ctlValue = getCtlValue(executor, ctlField);
+        log.info("getCtlValue  : {}", formatBinaryString(ctlValue));
+        log.info("workerCountOf: {}", workerCountOf(ctlValue));
+        log.info("Is    RUNNING: {}", runStateOf(ctlValue) == RUNNING);
+        log.info("Is   SHUTDOWN: {}", runStateOf(ctlValue) == SHUTDOWN);
+        log.info("Is       STOP: {}", runStateOf(ctlValue) == STOP);
+        log.info("Is    TIDYING: {}", runStateOf(ctlValue) == TIDYING);
+        log.info("Is TERMINATED: {}", runStateOf(ctlValue) == TERMINATED);
     }
 
     public static void main(String[] args) throws NoSuchFieldException, InterruptedException {
-        System.out.println(Integer.toBinaryString(CAPACITY));
-        System.out.println(Integer.toBinaryString(STOP));
-        System.out.println(Integer.toBinaryString(RUNNING));
-        ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 2, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+        // 打印出来看看几种状态的二进制表示
+        log.info("{} --> CAPACITY", formatBinaryString(CAPACITY));
+        log.info("{} --> RUNNING", formatBinaryString(RUNNING));
+        log.info("{} --> STOP", formatBinaryString(STOP));
+        log.info("{} --> TERMINATED", formatBinaryString(TERMINATED));
+        // 创建一个线程池，运行两个任务
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(
+                1, 2, 0L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(1));
         executor.submit(buildRunnableTask());
         executor.submit(buildRunnableTask());
+        executor.submit(buildRunnableTask());
+        // 休眠一秒钟，可以拿到中间状态的ctl
         Thread.sleep(1000);
-        executor.getActiveCount();
+        log.info("getActiveCount(): {}", executor.getActiveCount());
+        // 通过反射能拿到ThreadPoolExecutor的ctl的值
         Field ctlField = ThreadPoolExecutor.class.getDeclaredField("ctl");
         ctlField.setAccessible(true);
-        System.out.println("WorkerCountOf=" + workerCountOf(getCtlValue(executor, ctlField)));
-        System.out.println("IsRunning=" + (runStateOf(getCtlValue(executor, ctlField)) == RUNNING));
-        System.out.println("IsStop=" + (runStateOf(getCtlValue(executor, ctlField)) == STOP));
-        System.out.println("After 2 seconds.....");
-        Thread.sleep(2000);
+        // 线程池运行中的状态可通过ctl拿到
+        peekThreadPoolExecuteState(executor, ctlField);
+        // 终止线程池，再来看看线程池中ctl的状态
         executor.shutdownNow();
-        System.out.println("WorkerCountOf=" + workerCountOf(getCtlValue(executor, ctlField)));
-        System.out.println("IsRunning=" + (runStateOf(getCtlValue(executor, ctlField)) == RUNNING));
-        System.out.println("IsStop=" + (runStateOf(getCtlValue(executor, ctlField)) == STOP));
+        peekThreadPoolExecuteState(executor, ctlField);
+        // 休眠2秒钟，看看线程池最终的状态
+        Thread.sleep(2000);
+        peekThreadPoolExecuteState(executor, ctlField);
     }
 }
