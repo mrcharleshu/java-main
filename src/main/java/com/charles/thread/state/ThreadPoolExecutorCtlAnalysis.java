@@ -1,4 +1,4 @@
-package com.charles.thread;
+package com.charles.thread.state;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ReflectionUtils;
@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * -------- 1111 1111 1111 1111 1111 1111 1111 1001
  * @author Charles
  */
-@Slf4j
+@Slf4j(topic = "ThreadPoolExecutorCtlAnalysis")
 public class ThreadPoolExecutorCtlAnalysis {
     private static final int COUNT_BITS = Integer.SIZE - 3;
     private static final int CAPACITY = (1 << COUNT_BITS) - 1;// 000,11111111111111111111111111111
@@ -78,7 +78,7 @@ public class ThreadPoolExecutorCtlAnalysis {
         return ((AtomicInteger) ReflectionUtils.getField(field, executor)).get();
     }
 
-    private static String formatBinaryString(int state) {
+    static String formatBinaryString(int state) {
         StringBuilder binaryString = new StringBuilder(Integer.toBinaryString(state));
         if (binaryString.length() < Integer.SIZE) {
             for (int i = binaryString.length(); i < Integer.SIZE; i++) {

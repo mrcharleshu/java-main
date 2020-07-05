@@ -1,115 +1,86 @@
 package com.charles.thread;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.Random;
 import java.util.concurrent.Phaser;
+import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class PhaserExample {
-
-    void runTasks(List<Runnable> tasks) throws InterruptedException {
-
-        /**
-         * The phaser is a nice synchronization barrier.
-         */
-        final Phaser phaser = new Phaser(1) {
-            /**
-             * onAdvance() is invoked when all threads reached the synchronization barrier. It returns true if the
-             * phaser should terminate, false if phaser should continue with next phase. When terminated: (1) attempts
-             * to register new parties have no effect and (2) synchronization methods immediately return without waiting
-             * for advance. When continue:
-             *
-             * <pre>
-             *       -> set unarrived parties = registered parties
-             *       -> set arrived parties = 0
-             *       -> set phase = phase + 1
-             * </pre>
-             *
-             * This causes another iteration for all thread parties in a new phase (cycle).
-             *
-             */
-            protected boolean onAdvance(int phase, int registeredParties) {
-                System.out.println("On advance" + " -> Registered: " + getRegisteredParties() + " - Unarrived: "
-                        + getUnarrivedParties() + " - Arrived: " + getArrivedParties() + " - Phase: " + getPhase());
-                /**
-                 * This onAdvance() implementation causes the phaser to cycle 1 time (= 2 iterations).
-                 */
-                return phase >= 1 || registeredParties == 0;
-            }
-        };
-
-        dumpPhaserState("After phaser init", phaser);
-
-        /** Create and start threads. */
-        for (final Runnable task : tasks) {
-            /**
-             * Increase the number of unarrived parties -> equals the number of parties required to advance to the next
-             * phase.
-             */
-            phaser.register();
-            dumpPhaserState("After register", phaser);
-            new Thread() {
-                public void run() {
-                    do {
-                        /**
-                         * Wait for all threads reaching the synchronization barrier: more precisely, wait for arrived
-                         * parties = registered parties. If arrived parties = registered parties: phase advances and
-                         * onAdvance() is invoked.
-                         */
-                        phaser.arriveAndAwaitAdvance();
-                        task.run();
-                    } while (!phaser.isTerminated());
-                }
-            }.start();
-            Thread.sleep(500);
-            dumpPhaserState("After arrival", phaser);
-        }
-
-        /**
-         * When the final party for a given phase arrives, onAdvance() is invoked and the phase advances. The
-         * "face advances" means that all threads reached the barrier and therefore all threads are synchronized and can
-         * continue processing.
-         */
-        dumpPhaserState("Before main thread arrives and deregisters", phaser);
-        /**
-         * The arrival and deregistration of the main thread allows the other threads to start working. This is because
-         * now the registered parties equal the arrived parties.
-         */
-        phaser.arriveAndDeregister();
-        dumpPhaserState("After main thread arrived and deregistered", phaser);
-        System.out.println("Main thread will terminate ...");
-    }
-
-    private void dumpPhaserState(String when, Phaser phaser) {
-        System.out.println(when + " -> Registered: " + phaser.getRegisteredParties() + " - Unarrived: "
-                + phaser.getUnarrivedParties() + " - Arrived: " + phaser.getArrivedParties() + " - Phase: "
-                + phaser.getPhase());
-    }
 
     public static void main(String[] args) throws InterruptedException {
 
-        List<Runnable> tasks = new ArrayList<>();
+        Phaser phaser = new Phaser() {
+            @Override
+            protected boolean onAdvance(int phase, int registeredParties) {
+                log.info("=================step-" + phase + "===================" + registeredParties);
+                return super.onAdvance(phase, registeredParties);
+            }
+        };
 
-        for (int i = 0; i < 2; i++) {
+        Bus bus1 = new Bus(phaser, "小张");
+        Bus bus2 = new Bus(phaser, "小李");
+        Bus bus3 = new Bus(phaser, "小王");
 
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println(Thread.currentThread().getName() + ":go  :" + new Date());
-                    int a = 0, b = 1;
-                    for (int i = 0; i < 2000000000; i++) {
-                        a = a + b;
-                        b = a - b;
-                    }
-                    System.out.println(Thread.currentThread().getName() + ":done:" + new Date());
-                }
-            };
+        bus1.start();
+        bus2.start();
+        bus3.start();
 
-            tasks.add(runnable);
+        log.info("getRegisteredParties(): {}", phaser.getRegisteredParties());
 
+        Thread.sleep(20000);
+
+        log.info("getRegisteredParties(): {}, getPhaser(): {}", phaser.getRegisteredParties(), phaser.getPhase());
+    }
+
+    static public class Bus extends Thread {
+
+        private final Phaser phaser;
+        private final Random random;
+
+        public Bus(Phaser phaser, String name) {
+            this.phaser = phaser;
+            setName(name);
+            random = new Random();
+            phaser.register();
         }
 
-        new PhaserExample().runTasks(tasks);
+        private void trip(int sleepRange, String cityName) {
+            log.info(this.getName() + " 准备去" + cityName + "....");
+            int sleep = random.nextInt(sleepRange);
+            try {
+                TimeUnit.SECONDS.sleep(sleep);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            log.info(this.getName() + " 达到" + cityName + "...... ");
+            if (this.getName().equals("小王1")) { //  测试掉队的情况
+                try {
+                    TimeUnit.SECONDS.sleep(7);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                phaser.arriveAndDeregister();
+            } else {
+                phaser.arriveAndAwaitAdvance();
+            }
+        }
 
+        @Override
+        public void run() {
+            try {
+                int s = random.nextInt(3);
+                TimeUnit.SECONDS.sleep(s);
+                log.info(this.getName() + "  准备好了，旅行路线=北京=>上海=>杭州 ");
+                phaser.arriveAndAwaitAdvance();// 等待所有的汽车准备好
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            trip(5, "北京");
+            trip(5, "上海");
+            trip(3, "杭州");
+        }
     }
 }
