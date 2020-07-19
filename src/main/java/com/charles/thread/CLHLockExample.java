@@ -47,6 +47,7 @@ public class CLHLockExample {
         private final ThreadLocal<QNode> myNode;
 
         public CLHLock() {
+            // 初始状态 tail指向一个新node(head)节点
             this.tail = new AtomicReference<>(new QNode());
             this.myNode = ThreadLocal.withInitial(QNode::new);
             this.myPred = new ThreadLocal<>();
@@ -71,7 +72,7 @@ public class CLHLockExample {
             QNode pred = tail.getAndSet(node);
             // 把旧的节点放入前驱节点。
             myPred.set(pred);
-            // 判断前驱节点的状态，然后走掉。
+            // 在等待前驱节点的locked域变为false，这是一个自旋等待的过程
             // peekNodeInfo("try lock");
             while (pred.locked) {
             }
