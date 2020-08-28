@@ -1,19 +1,17 @@
 package com.charles.rx2;
 
-import io.reactivex.*;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import org.reactivestreams.Subscriber;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Charles
  */
-public class RxJava2Test {
+public class FlowableVsObservable {
 
     public static void main(String[] args) {
         // startup1();
@@ -21,44 +19,44 @@ public class RxJava2Test {
         // startup2();
         // Flowable.fromPublisher(handler.handle(ctx, event)).doOnNext(o -> eventStream.publish(o)).subscribe();
         // Flowable.fromPublisher(handler.handle(ctx, event)).subscribe(o -> eventStream.publish(o));
-        Flowable flowable = Flowable.create(new FlowableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(@NonNull FlowableEmitter<Object> emitter) throws Exception {
-                emitter.onNext("Hello world");
-            }
-        }, BackpressureStrategy.BUFFER);
-        Flowable flowable2 = Flowable.fromPublisher(new Flowable<Object>() {
-            @Override
-            protected void subscribeActual(Subscriber<? super Object> s) {
-                s.onNext("Hello world");
-            }
-        });
-        flowable.doOnNext((Consumer<Object>) System.out::println).subscribe();
-        flowable.subscribe(System.out::println);
-        // Flowable.just("Hello world").subscribe(System.out::println);
-        // syncOperation();
-        Observable.interval(1, TimeUnit.MILLISECONDS)
-                .observeOn(Schedulers.newThread())
-                .subscribe(
-                        i -> {
-                            System.out.println("subscribe value: " + i);
-                            try {
-                                Thread.sleep(100);
-                            } catch (Exception e) {
-                            }
-                        },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                System.out.println("Error: " + throwable.getMessage());
-                            }
-                        },
-                        new Action() {
-                            @Override
-                            public void run() throws Exception {
-                                System.out.println("On complete");
-                            }
-                        });
+        // Flowable flowable = Flowable.create(new FlowableOnSubscribe<Object>() {
+        //     @Override
+        //     public void subscribe(@NonNull FlowableEmitter<Object> emitter) throws Exception {
+        //         emitter.onNext("Hello world");
+        //     }
+        // }, BackpressureStrategy.BUFFER);
+        // Flowable flowable2 = Flowable.fromPublisher(new Flowable<Object>() {
+        //     @Override
+        //     protected void subscribeActual(Subscriber<? super Object> s) {
+        //         s.onNext("Hello world");
+        //     }
+        // });
+        // flowable.doOnNext((Consumer<Object>) System.out::println).subscribe();
+        // flowable.subscribe(System.out::println);
+        // // Flowable.just("Hello world").subscribe(System.out::println);
+        // // syncOperation();
+        // Observable.interval(1, TimeUnit.MILLISECONDS)
+        //         .observeOn(Schedulers.newThread())
+        //         .subscribe(
+        //                 i -> {
+        //                     System.out.println("subscribe value: " + i);
+        //                     try {
+        //                         Thread.sleep(100);
+        //                     } catch (Exception e) {
+        //                     }
+        //                 },
+        //                 new Consumer<Throwable>() {
+        //                     @Override
+        //                     public void accept(Throwable throwable) throws Exception {
+        //                         System.out.println("Error: " + throwable.getMessage());
+        //                     }
+        //                 },
+        //                 new Action() {
+        //                     @Override
+        //                     public void run() throws Exception {
+        //                         System.out.println("On complete");
+        //                     }
+        //                 });
     }
 
     private static void syncOperation() {
