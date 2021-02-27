@@ -1,19 +1,27 @@
 package com.charles.rx2;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.*;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import lombok.extern.slf4j.Slf4j;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Charles
  */
+@Slf4j
 public class FlowableVsObservable {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        // observableBackpressure();
+        flowableBackpressure();
+        TimeUnit.HOURS.sleep(1L);
         // startup1();
         // 先执行onSubscribe,再执行onNext和onComplete
         // startup2();
@@ -112,6 +120,70 @@ public class FlowableVsObservable {
             }
         });
 
+    }
+
+    public static void observableBackpressure() {
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                int i = 0;
+                while (true) {
+                    Thread.sleep(5);
+                    i++;
+                    e.onNext(i);
+                    log.info("每5ms发送一次数据：" + i);
+                }
+            }
+        }).subscribeOn(Schedulers.newThread())//使被观察者存在独立的线程执行
+                .observeOn(Schedulers.newThread())//使观察者存在独立的线程执行
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        Thread.sleep(5000);
+                        log.info("每5000ms接收一次数据：" + integer);
+                    }
+                });
+    }
+
+    public static void flowableBackpressure() {
+        Flowable.create(new FlowableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(FlowableEmitter<Integer> e) throws Exception {
+                for (int j = 0; j <= 150; j++) {
+                    e.onNext(j);
+                    log.info(" 发送数据：" + j);
+                    Thread.sleep(50);
+                }
+            }
+        }, BackpressureStrategy.ERROR)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<Integer>() {
+                    @Override
+                    public void onSubscribe(Subscription s) {
+                        s.request(Long.MAX_VALUE); //观察者设置接收事件的数量,如果不设置接收不到事件
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        log.info("onNext : " + (integer));
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        log.info("onError : " + t.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        log.info("onComplete");
+                    }
+                });
     }
 
 }
