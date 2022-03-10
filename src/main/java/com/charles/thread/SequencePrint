@@ -1,0 +1,28 @@
+package com.charles.thread;
+
+public class SequencePrint {
+    private static final int PRINT_TOTAL = 10;
+    private static final int PRINT_THREADS = 3;
+    private static volatile int PRINT_COUNT = 1;
+
+    private synchronized static void increment() {
+        PRINT_COUNT++;
+    }
+
+    public static void main(String[] args) {
+        new Thread(print(PRINT_COUNT % PRINT_THREADS)).start();
+        new Thread(print((PRINT_COUNT + 1) % PRINT_THREADS)).start();
+        new Thread(print((PRINT_COUNT + 2) % PRINT_THREADS)).start();
+    }
+
+    private static Runnable print(int remainder) {
+        return () -> {
+            while (PRINT_COUNT <= PRINT_TOTAL) {
+                if (PRINT_COUNT % PRINT_THREADS == remainder) {
+                    System.out.println(Thread.currentThread().getName() + ":" + PRINT_COUNT);
+                    increment();
+                }
+            }
+        };
+    }
+}
