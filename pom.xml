@@ -29,7 +29,7 @@
         <guava.version>31.1-jre</guava.version>
         <!--<quartz.version>2.2.1</quartz.version>-->
         <pinyin4j.version>2.5.1</pinyin4j.version>
-        <pdfbox.version>2.0.15</pdfbox.version>
+        <pdfbox.version>2.0.24</pdfbox.version>
         <jxls.version>2.3.0</jxls.version>
         <jxls-poi.version>1.0.9</jxls-poi.version>
         <jxls-jexcel.version>1.0.6</jxls-jexcel.version>
