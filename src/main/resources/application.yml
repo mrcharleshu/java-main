@@ -1,3 +1,5 @@
+server:
+  port: 8080
 logging:
   pattern:
     # console: '%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%-5level) %clr(%logger{15}){cyan} - %msg%n'
