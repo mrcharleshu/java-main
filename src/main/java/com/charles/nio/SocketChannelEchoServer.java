@@ -8,6 +8,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -47,14 +48,21 @@ public class SocketChannelEchoServer {
 
     private static void answerWithEcho(ByteBuffer buffer, SelectionKey key) throws IOException {
         SocketChannel client = (SocketChannel) key.channel();
+        String prepend = "server processed[" + LocalDateTime.now() + "], ";
+        // add header string
+        buffer.put(prepend.getBytes());
+        // read into buffer. (channel >> buffer)
         int r = client.read(buffer);
-        if (r == -1 || new String(buffer.array()).trim().equals(POISON_PILL)) {
+        if (r == -1 || new String(buffer.array(), 0, buffer.position()).trim().equals(POISON_PILL)) {
             client.close();
             System.out.println("Server Not accepting client messages anymore");
         } else {
-            String response = new String(buffer.array()).trim();
-            System.out.println("Server receive message: " + response);
+            String message = new String(buffer.array(), 0, buffer.position());
+            String buffAll = new String(buffer.array()).trim();
+            System.out.printf("Server receive message=[%s]%n", message);
+            System.out.printf("Server receive buffAll=[%s]%n", buffAll);
             buffer.flip();
+            // read from buffer into channel (channel << buffer)
             client.write(buffer);
             buffer.clear();
         }

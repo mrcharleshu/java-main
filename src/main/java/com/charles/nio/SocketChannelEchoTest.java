@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * <a href="https://www.baeldung.com/java-nio-selector">Introduction to the Java NIO Selector</a>
@@ -35,16 +35,17 @@ public class SocketChannelEchoTest {
         String client1Response2 = client1.sendMessage("world");
         String client2Response1 = client2.sendMessage("hello");
         String client2Response2 = client2.sendMessage("world");
-        assertEquals("hello", client1Response1);
-        assertEquals("world", client1Response2);
-        assertEquals("hello", client2Response1);
-        assertEquals("world", client2Response2);
+        assertTrue(client1Response1.contains("hello"));
+        assertTrue(client1Response2.contains("world"));
+        assertTrue(client2Response1.contains("hello"));
+        assertTrue(client2Response2.contains("world"));
     }
 
     @After
     public void teardown() throws IOException {
         System.out.println("teardown...");
         server.destroy();
-        SocketChannelEchoClient.stop();
+        client1.stop();
+        client2.stop();
     }
 }
