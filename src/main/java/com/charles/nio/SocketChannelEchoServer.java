@@ -24,6 +24,7 @@ public class SocketChannelEchoServer {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         Selector selector = Selector.open();
+        // "SelectorProvider.provider().openServerSocketChannel();"
         ServerSocketChannel serverSocket = ServerSocketChannel.open();
         serverSocket.bind(new InetSocketAddress(SERVER_IP, SERVER_PORT));
         serverSocket.configureBlocking(false);

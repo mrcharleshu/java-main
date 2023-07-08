@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.nio.channels.spi.SelectorProvider;
 import java.util.Scanner;
 
 /**
@@ -48,8 +49,9 @@ public class SocketChannelEchoClient {
 
     private SocketChannelEchoClient() {
         try {
-            client = SocketChannel.open(new InetSocketAddress(SocketChannelEchoServer.SERVER_IP,
-                    SocketChannelEchoServer.SERVER_PORT));
+            // "SelectorProvider.provider().openSocketChannel();"
+            client = SocketChannel.open(new InetSocketAddress(
+                    SocketChannelEchoServer.SERVER_IP, SocketChannelEchoServer.SERVER_PORT));
             buffer = ByteBuffer.allocate(256);
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,7 +63,7 @@ public class SocketChannelEchoClient {
         buffer.put(msg.getBytes());
         try {
             long start = System.currentTimeMillis();
-            // 需设置limit为了下面可写到channel
+            // 需设置limit保证不会写多（buffer中的数据未清空）为了下面可写到channel
             buffer.flip();
             client.write(buffer);
             // 清空buffer为了下面可从channel中读
